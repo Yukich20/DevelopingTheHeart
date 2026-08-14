@@ -1,0 +1,6 @@
+# PRE-LAUNCH: this blocks all crawlers. At launch, delete the Disallow line
+# and remove the noindex meta tag from every page.
+User-agent: *
+Disallow: /
+
+Sitemap: https://developingtheheart.com/sitemap.xml

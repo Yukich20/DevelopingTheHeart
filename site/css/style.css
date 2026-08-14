@@ -1,0 +1,481 @@
+/* ===========================================================
+   Developing The Heart Counseling & Consulting
+   Single stylesheet. Palette lives in :root — change it there.
+   =========================================================== */
+
+:root{
+  --navy:#1D2E49;               /* slate-navy — primary dark */
+  --navy-deep:#101E33;
+  --navy-mid:#2A3E5C;
+  --evergreen:#2E4A42;
+  --stone:#656D76;              /* 4.8:1 on --paper — AA */
+  /* Warm cream ground. --paper is golden-psychology.com's page colour, read
+     off their Squarespace palette (--white-hsl: 44.21,100%,92.55%). The three
+     tones below it were re-cut in the same hue so the bands still step down
+     evenly; leaving them cool-grey against this cream read as dirty. */
+  --paper:#FFF5D9;
+  --linen:#F1E8D0;
+  --sand:#E3DABF;
+  --rule:#D1C9B3;
+  --ink:#2A2829;                /* warm charcoal */
+  --slate:#485260;              /* 7.3:1 on --paper — AAA */
+  --brass:#7E6236;              /* accent on LIGHT backgrounds — AA */
+  --brass-light:#C9AE83;        /* accent on DARK backgrounds — AA */
+  --disp:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  /* Book Antiqua is a licensed system font, not a webfont — it is present on
+     Windows and on Macs with MS Office, and absent nearly everywhere else.
+     Palatino is the same design under a different name; Georgia is the last
+     resort. See README for what this means on phones. */
+  --body:'Book Antiqua','Palatino Linotype','Palatino LT STD',Palatino,'URW Palladio L',Georgia,serif;
+  --wrap:1160px;
+  --pad:clamp(1.25rem,5vw,3.5rem);
+  --pill:999px;
+  --card:20px;
+  --wave-h:clamp(34px,4.6vw,78px);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.7;font-weight:400;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+h1,h2,h3,h4{font-family:var(--disp);font-weight:400;margin:0;line-height:1.12}
+p{margin:0 0 1.2em}
+p:last-child{margin-bottom:0}
+a{color:inherit}
+img{max-width:100%;display:block;height:auto}
+ul,ol{margin:0}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.eyebrow{font-family:var(--body);font-size:.6875rem;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--brass);display:block;margin:0 0 1.5rem}
+.on-dark .eyebrow,.band--navy .eyebrow,.band--green .eyebrow{color:var(--brass-light)}
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* skip link — keyboard accessibility */
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:#fff;color:var(--navy);
+  padding:1rem 1.5rem;font-weight:600;text-decoration:none}
+.skip:focus{left:0}
+
+/* ---------- header / nav ---------- */
+.nav{background:var(--navy-deep);border-bottom:1px solid rgba(255,255,255,.14)}
+.nav--over{position:absolute;top:0;left:0;right:0;z-index:40;background:transparent;
+  border-bottom:1px solid rgba(255,255,255,.16)}
+.nav-in{display:flex;align-items:center;gap:2rem;min-height:86px}
+.brand{text-decoration:none;color:#fff;line-height:1.15;flex-shrink:0}
+.brand b{font-family:var(--disp);font-weight:500;font-size:1.5rem;display:block}
+.brand small{font-size:.5625rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.62);display:block;margin-top:.4rem}
+.nav-links{display:flex;gap:clamp(1.1rem,2.2vw,1.9rem);margin-left:auto;align-items:center}
+.nav-links a{font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.86);text-decoration:none;padding:.4rem 0;border-bottom:1px solid transparent}
+.nav-links a:hover,.nav-links a:focus-visible{color:#fff}
+.nav-links a[aria-current="page"]{border-bottom-color:var(--brass-light);color:#fff}
+.nav-links .cta{border:1px solid rgba(255,255,255,.5);border-radius:var(--pill);padding:.75rem 1.5rem;color:#fff}
+.nav-links .cta:hover,.nav-links .cta:focus-visible,
+.nav-links .cta[aria-current="page"]{background:#fff;color:var(--navy);border-color:#fff}
+.nav-toggle{display:none;margin-left:auto;background:none;border:1px solid rgba(255,255,255,.4);
+  border-radius:var(--pill);
+  color:#fff;padding:.65rem 1.1rem;font-size:.6875rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;cursor:pointer}
+/* 1040px, not 940 — "Beyond the Uniform" + "Fees & Payment" need the extra room */
+@media (max-width:1040px){
+  .nav-toggle{display:block}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;
+    align-items:stretch;gap:0;background:var(--navy-deep);padding:.5rem var(--pad) 1.5rem;
+    border-bottom:1px solid rgba(255,255,255,.14)}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:.95rem 0;border-bottom:1px solid rgba(255,255,255,.1)}
+  .nav-links .cta{margin-top:1rem;text-align:center;border:1px solid rgba(255,255,255,.5);
+      border-radius:var(--pill)}
+}
+
+/* ---------- buttons (pill) ---------- */
+.btn{display:inline-block;font-size:.75rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;text-decoration:none;padding:1.05rem 2.15rem;border:1px solid transparent;
+  border-radius:var(--pill);
+  transition:background .2s ease,color .2s ease,transform .2s ease,box-shadow .2s ease;cursor:pointer}
+.btn:hover{transform:translateY(-1px)}
+.btn-solid{background:#fff;color:var(--navy);box-shadow:0 1px 2px rgba(16,30,51,.10)}
+.btn-solid:hover,.btn-solid:focus-visible{background:var(--sand);box-shadow:0 8px 22px rgba(16,30,51,.18)}
+.btn-navy{background:var(--navy);color:#fff;box-shadow:0 1px 2px rgba(16,30,51,.14)}
+.btn-navy:hover,.btn-navy:focus-visible{background:var(--navy-mid);box-shadow:0 8px 22px rgba(16,30,51,.22)}
+.btn-line{border-color:rgba(255,255,255,.5);color:#fff}
+.btn-line:hover,.btn-line:focus-visible{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.8)}
+.btn-line-dark{border-color:var(--navy);color:var(--navy)}
+.btn-line-dark:hover,.btn-line-dark:focus-visible{background:var(--navy);color:#fff}
+@media (prefers-reduced-motion:reduce){.btn,.btn:hover{transition:none;transform:none}}
+
+/* ---------- wavy section transitions ----------
+   <div class="wave" style="--from:<color above>;--to:<color below>">
+   .wave--over sits inside a photo hero and carves the next section's color out of it. */
+.wave{background:var(--from,transparent);line-height:0;font-size:0}
+.wave svg{display:block;width:100%;height:var(--wave-h)}
+.wave svg path{fill:var(--to)}
+.wave--over{position:absolute;left:0;right:0;bottom:0;z-index:3;background:transparent}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:84vh;display:flex;flex-direction:column;justify-content:center;color:#fff;
+  background:var(--navy-deep);overflow:hidden}
+.hero--short{min-height:auto}
+.hero .scene{position:absolute;inset:0;width:100%;height:100%}
+/* The 68%/73% offsets below were for the old coast photo, whose subject sat
+   right of centre. The highway sunset is symmetrical — the road and the glow
+   are both mid-frame — so it wants centring, biased slightly low to keep the
+   horizon and clouds rather than empty sky. */
+.hero .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 54%;filter:saturate(.82) contrast(1.04)}
+.hero .scrim{position:absolute;inset:0;
+  background:linear-gradient(100deg,rgba(9,20,36,.94) 0%,rgba(9,20,36,.76) 44%,rgba(9,20,36,.28) 100%)}
+.hero-in{position:relative;z-index:2;width:100%;padding-top:9.5rem;padding-bottom:7.5rem}
+/* longhand, so .wrap keeps supplying the left/right gutter */
+.hero--short .hero-in{padding-top:9rem;padding-bottom:calc(3.5rem + var(--wave-h))}
+.hero h1{font-size:clamp(2.5rem,6.2vw,4.75rem);font-weight:300;line-height:1.07;max-width:40rem}
+.hero--short h1{font-size:clamp(2.25rem,5vw,3.75rem)}
+.hero h1 em{font-style:italic}
+.hero .eyebrow{font-size:.8rem}
+.hero-sub{font-size:clamp(1.0625rem,1.8vw,1.25rem);color:rgba(255,255,255,.88);
+  margin:1.75rem 0 2.5rem;max-width:34rem;line-height:1.65}
+.hero-cta{display:flex;gap:.75rem;flex-wrap:wrap}
+@media (max-width:640px){
+  .hero .hero-photo{object-position:center 50%}
+  .hero .scrim{background:linear-gradient(100deg,rgba(9,20,36,.95) 0%,rgba(9,20,36,.82) 65%,rgba(9,20,36,.5) 100%)}
+}
+
+/* ---------- bands ----------
+   Each band carries its own surface treatment so consecutive sections read as
+   distinct chapters rather than one continuous scroll. */
+.band{padding:clamp(3.25rem,7vw,6rem) 0;position:relative}
+/* glows are sized in % and fade out well before the band edges, so the wave
+   divider above/below meets a flat colour and leaves no visible seam */
+.band--paper{background:var(--paper);
+  background-image:radial-gradient(72% 58% at 12% 50%,rgba(126,98,54,.07),transparent 70%)}
+.band--linen{background:linear-gradient(180deg,var(--linen) 0%,var(--sand) 100%)}
+.band--sand{background:var(--sand)}
+.band--navy{background:var(--navy);color:#EDF1F5;
+  background-image:radial-gradient(60% 56% at 84% 50%,rgba(201,174,131,.12),transparent 70%)}
+.band--green{background:var(--evergreen);color:#EDF2EF}
+/* centered composition — used once per page to break the left-rail rhythm */
+.band--center .wrap{text-align:center}
+.band--center h2.head,.band--center .lede{max-width:20ch;margin-left:auto;margin-right:auto}
+.band--center .prose{max-width:42rem;margin:0 auto}
+.band--center .two{grid-template-columns:1fr;justify-items:center;gap:1.5rem}
+h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-height:1.1}
+.band--navy h2.head,.band--green h2.head{color:#fff}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
+  gap:clamp(2rem,6vw,5rem);align-items:start}
+@media (max-width:860px){.two{grid-template-columns:1fr;gap:2.5rem}}
+.prose p{color:var(--slate)}
+.band--navy .prose p,.band--green .prose p{color:rgba(237,241,245,.84)}
+.prose strong{color:var(--ink);font-weight:600}
+.band--navy .prose strong,.band--green .prose strong{color:#fff}
+.lede{font-family:var(--disp);font-size:clamp(1.5rem,3.2vw,2.25rem);font-weight:300;
+  line-height:1.34;color:var(--navy);max-width:26ch}
+
+/* ---------- role list (chips) ---------- */
+.roles{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:2.25rem;list-style:none;padding:0}
+.roles li{border:1px solid var(--rule);border-radius:var(--pill);background:#fff;
+  padding:.5rem 1.05rem;font-size:.875rem;color:var(--slate);line-height:1.4}
+
+/* ---------- photo gallery ----------
+   Source photos are all portrait but at wildly different ratios (0.63, 0.42,
+   0.38). aspect-ratio + object-fit:cover normalises them into one row so the
+   strip reads as a set rather than three mismatched heights. object-position
+   sits high because the faces are in the upper third of every frame. */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(.6rem,1.8vw,1.35rem);margin-top:clamp(2.5rem,5vw,3.75rem)}
+.gallery figure{margin:0}
+.gallery img{width:100%;aspect-ratio:2/3;object-fit:cover;object-position:center 22%;
+  border-radius:var(--card);box-shadow:0 6px 24px rgba(16,30,51,.13)}
+
+/* ---------- portrait + credentials ---------- */
+.portrait{background:var(--navy-mid);aspect-ratio:4/5;position:relative;overflow:hidden;
+  border-radius:var(--card)}
+.portrait img{width:100%;height:100%;object-fit:cover}
+.portrait .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:.6rem;color:rgba(255,255,255,.55);font-size:.6875rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:2rem}
+.portrait .ph span{font-family:var(--disp);font-size:1.5rem;letter-spacing:0;text-transform:none;
+  font-weight:300;color:rgba(255,255,255,.8)}
+.cred{border-top:1px solid var(--rule);margin-top:2rem;padding-top:1.5rem;
+  font-size:.9375rem;color:var(--slate);line-height:1.8}
+.cred b{color:var(--ink);font-weight:600;display:block;font-size:.6875rem;letter-spacing:.16em;
+  text-transform:uppercase;margin-bottom:.5rem}
+
+/* ---------- session options ---------- */
+.sessions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;
+  background:var(--rule);margin-top:2.5rem;border:1px solid var(--rule);
+  border-radius:var(--card);overflow:hidden}
+.sess{background:var(--paper);padding:1.75rem 1.5rem}
+.sess b{font-family:var(--disp);font-size:2.5rem;font-weight:300;color:var(--navy);
+  display:block;line-height:1}
+.sess span{font-size:.6875rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--stone);display:block;margin-top:.5rem}
+.sess p{font-size:.9375rem;color:var(--slate);margin:.9rem 0 0;line-height:1.55}
+
+.modalities{list-style:none;padding:0;margin:2rem 0 0;columns:2;column-gap:2rem}
+.modalities li{font-size:1rem;color:var(--slate);padding:.45rem 0;break-inside:avoid}
+@media (max-width:560px){.modalities{columns:1}}
+
+/* ---------- confidentiality ledger ---------- */
+.ledger{list-style:none;padding:0;margin:0}
+.ledger li{padding:1.75rem 0;border-top:1px solid rgba(255,255,255,.2);
+  display:grid;grid-template-columns:7.5rem 1fr;gap:1.5rem;align-items:start}
+.ledger li:last-child{border-bottom:1px solid rgba(255,255,255,.2)}
+.tag{font-size:.625rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  padding:.35rem .75rem;text-align:center;margin-top:.35rem;border-radius:var(--pill)}
+.tag--y{background:var(--brass-light);color:#241B08}
+.tag--n{background:rgba(255,255,255,.16);color:#E4EAF0}
+.ledger h3{font-size:1.375rem;color:#fff;margin-bottom:.4rem}
+.ledger p{font-size:1rem;color:rgba(237,241,245,.78);margin:0;line-height:1.6}
+@media (max-width:560px){
+  .ledger li{grid-template-columns:1fr;gap:.75rem}
+  .tag{justify-self:start}
+}
+.pull{font-family:var(--disp);font-size:clamp(1.5rem,3.4vw,2.4rem);font-weight:300;
+  font-style:italic;line-height:1.32;color:#fff;max-width:24ch}
+.callout{border:1px solid rgba(255,255,255,.28);border-radius:var(--card);padding:2rem;margin-top:2.5rem}
+.callout h3{font-size:1.5rem;color:#fff;margin-bottom:.75rem}
+.callout p{font-size:1rem;color:rgba(237,241,245,.8);margin:0}
+
+/* ---------- fees: rate cards ---------- */
+.fcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:clamp(1.25rem,2.6vw,1.75rem);margin-top:2.75rem}
+.fcard{background:var(--paper);border:1px solid var(--rule);border-radius:var(--card);
+  padding:1.15rem 1.15rem 2rem;text-align:center;display:flex;flex-direction:column;
+  box-shadow:0 1px 2px rgba(16,30,51,.05)}
+.fcard-img{aspect-ratio:16/10;border-radius:calc(var(--card) - 9px);overflow:hidden;
+  background:var(--sand);margin-bottom:1.6rem}
+.fcard-img img{width:100%;height:100%;object-fit:cover}
+.fcard h3{font-family:var(--disp);font-style:italic;font-size:1.75rem;font-weight:500;
+  color:var(--navy);margin:0 0 .45rem;padding:0 .5rem}
+.fcard .meta{font-size:.9375rem;color:var(--slate);margin:0 0 1.35rem;padding:0 .5rem}
+.fcard .price{font-family:var(--disp);font-size:2.25rem;font-weight:300;color:var(--ink);
+  line-height:1;margin:0;font-variant-numeric:tabular-nums}
+.fcard .price small{display:block;font-family:var(--body);font-size:.6875rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin-top:.6rem}
+.fcard .breakdown{list-style:none;padding:0;margin:1.4rem 0 1.9rem;font-size:.875rem;
+  color:var(--slate);border-top:1px solid var(--rule)}
+.fcard .breakdown li{display:flex;justify-content:space-between;gap:1rem;padding:.55rem .35rem;
+  border-bottom:1px solid var(--rule);font-variant-numeric:tabular-nums}
+.fcard .breakdown li span:first-child{color:var(--stone)}
+.fcard .btn{margin-top:auto;align-self:center}
+.fnote{margin-top:1.5rem;font-size:.8125rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--stone);text-align:center}
+
+/* ---------- fees: table (retained for reference) ---------- */
+.feetable{width:100%;border-collapse:collapse;margin-top:2rem}
+.feetable caption{text-align:left;font-size:.625rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--stone);padding-bottom:1rem}
+.feetable th{font-size:.625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--stone);text-align:right;padding:0 0 .9rem;border-bottom:1px solid var(--rule)}
+.feetable th:first-child{text-align:left}
+.feetable td{padding:1.1rem 0;border-bottom:1px solid var(--rule);font-size:1.0625rem;
+  text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+.feetable td:first-child{text-align:left;color:var(--slate)}
+.feetable .amt{font-family:var(--disp);font-size:1.5rem;color:var(--navy)}
+.paylist{list-style:none;padding:0;margin:2.5rem 0 0}
+.paylist li{padding:1.1rem 0;border-top:1px solid var(--rule);
+  display:grid;grid-template-columns:9.5rem 1fr;gap:1.5rem;align-items:baseline}
+.paylist li:last-child{border-bottom:1px solid var(--rule)}
+.paylist b{font-size:.625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.paylist span{font-size:1rem;color:var(--slate);line-height:1.6}
+@media (max-width:560px){.paylist li{grid-template-columns:1fr;gap:.35rem}}
+.note{border-left:2px solid var(--brass);padding-left:1.35rem;margin-top:2.5rem;
+  font-size:1rem;color:var(--slate);max-width:56ch}
+.rv > .note:first-child{margin-top:0}
+.note strong{color:var(--ink);font-weight:600}
+
+/* ---------- steps ---------- */
+.steps{list-style:none;counter-reset:s;padding:0;margin:2.5rem 0 0}
+.steps li{counter-increment:s;padding:1.5rem 0;border-top:1px solid rgba(255,255,255,.2);
+  display:grid;grid-template-columns:3rem 1fr;gap:1.25rem;align-items:start}
+.steps li:last-child{border-bottom:1px solid rgba(255,255,255,.2)}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--disp);
+  font-size:1.5rem;color:var(--brass-light);line-height:1.2}
+.steps h3{font-size:1.25rem;color:#fff;margin-bottom:.3rem}
+.steps p{font-size:1rem;color:rgba(237,242,239,.8);margin:0}
+
+/* ---------- FAQ ---------- */
+.faq{margin-top:2.5rem;border-top:1px solid var(--rule)}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{padding:1.35rem 0;font-family:var(--disp);font-size:1.375rem;color:var(--navy);
+  cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:1.5rem;align-items:baseline}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:1.5rem;color:var(--brass);flex-shrink:0;line-height:1}
+.faq details[open] summary::after{content:"\2013"}
+.faq .a{padding:0 0 1.5rem;color:var(--slate);max-width:62ch}
+
+/* ---------- book a consult ----------
+   Two columns: the invitation on the left, the inquiry form on the right.
+   No hero on this page, so the band carries the extra top room itself. */
+.consult{padding-top:clamp(4rem,9vw,7rem)}
+.consult .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(2.5rem,7vw,6rem);align-items:start}
+@media (max-width:900px){.consult .wrap{grid-template-columns:1fr;gap:3rem}}
+.consult h1{font-size:clamp(2.5rem,5.4vw,4.25rem);font-weight:300;line-height:1.06;
+  color:var(--navy);max-width:13ch}
+.consult h1 em{font-style:italic}
+.consult-lede{font-size:clamp(1.125rem,1.75vw,1.4375rem);line-height:1.6;color:var(--slate);
+  margin:2.5rem 0 0;max-width:36ch}
+.consult-rule{border:0;border-top:1px solid var(--rule);margin:2.75rem 0 1.75rem;max-width:34rem}
+.consult-fine{font-size:.8rem;line-height:1.7;color:var(--stone);max-width:54ch;margin:0}
+
+/* availability badge — the one live status signal on the site */
+.avail{display:flex;align-items:center;gap:.65rem;font-size:.6875rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--evergreen);margin:0 0 2.5rem}
+.avail::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:#3F8F5E;
+  box-shadow:0 0 0 4px rgba(63,143,94,.16);flex-shrink:0}
+
+/* ---------- inquiry form ---------- */
+.cform{display:grid;gap:1.75rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media (max-width:480px){.frow{grid-template-columns:1fr;gap:1.75rem}}
+.field{display:flex;flex-direction:column;min-width:0}
+.field label{font-size:.625rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--brass);margin-bottom:.7rem}
+.field label .opt{color:var(--stone);letter-spacing:.12em}
+.field input,.field select{font-family:var(--body);font-size:1.0625rem;line-height:1.5;
+  color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--rule);
+  border-radius:0;padding:.55rem 0;width:100%;transition:border-color .2s ease}
+.field input::placeholder{color:var(--stone);opacity:1}
+.field input:hover,.field select:hover{border-bottom-color:var(--stone)}
+.field input:focus,.field select:focus{border-bottom-color:var(--brass)}
+.field select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:1.75rem;
+  background-repeat:no-repeat;background-position:right .2rem center;background-size:.7rem;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%236E767F' stroke-width='1.6'/%3E%3C/svg%3E")}
+.cform .btn{justify-self:start;margin-top:.5rem}
+.cform-note{font-size:.8125rem;line-height:1.65;color:var(--stone);max-width:48ch;margin:0}
+@media (prefers-reduced-motion:reduce){.field input,.field select{transition:none}}
+.cform-foot{margin-top:2.75rem;padding-top:1.75rem;border-top:1px solid var(--rule);
+  font-size:.9375rem;line-height:1.9;color:var(--slate)}
+.cform-foot a{color:var(--navy);text-decoration:none;border-bottom:1px solid rgba(126,98,54,.45);
+  word-break:break-word}
+.cform-foot a:hover,.cform-foot a:focus-visible{border-bottom-color:var(--brass)}
+.cform-foot .sep{display:inline-block;width:2px;height:.9em;margin:0 .6rem;
+  background:var(--rule);vertical-align:-.08em}
+
+/* ---------- contact ---------- */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2.5rem;
+  margin-top:3rem;border-top:1px solid rgba(255,255,255,.2);padding-top:2.5rem}
+.cgrid h3{font-size:.625rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--brass-light);font-family:var(--body);margin-bottom:.75rem}
+.cgrid p{font-family:var(--disp);font-size:1.5rem;color:#fff;margin:0;line-height:1.3;word-break:break-word}
+.cgrid a{text-decoration:none;border-bottom:1px solid rgba(201,174,131,.6)}
+
+/* ---------- crisis ---------- */
+.crisis{background:var(--navy-deep);color:rgba(255,255,255,.75);padding:2.5rem 0;
+  border-top:1px solid var(--brass-light)}
+.crisis .wrap{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start}
+.crisis h3{font-size:.625rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--brass-light);font-family:var(--body);white-space:nowrap;margin:0}
+.crisis p{font-size:.9375rem;margin:0;line-height:1.65}
+.crisis strong{color:#fff;font-weight:600}
+@media (max-width:640px){.crisis .wrap{grid-template-columns:1fr;gap:.75rem}}
+
+/* ---------- crisis support disclosure ----------
+   A <details> whose <summary> is styled as a pill button. No JS: it opens and
+   closes natively, and the resource list is in the DOM either way, so a
+   screen reader and Ctrl-F both find the numbers whether or not it's open. */
+.cs{margin-top:2.75rem}
+.cs summary{display:inline-block;list-style:none;cursor:pointer;
+  font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  padding:1.05rem 2.15rem;border:1px solid transparent;border-radius:var(--pill);
+  background:#fff;color:var(--navy);box-shadow:0 1px 2px rgba(16,30,51,.10);
+  transition:background .2s ease,box-shadow .2s ease}
+.cs summary::-webkit-details-marker{display:none}
+.cs summary::after{content:"\002B";margin-left:.7rem;font-size:1rem;line-height:1;
+  color:var(--brass);vertical-align:-.05em}
+.cs[open] summary::after{content:"\2013"}
+.cs summary:hover,.cs summary:focus-visible{background:var(--sand);
+  box-shadow:0 8px 22px rgba(16,30,51,.18)}
+.cs-panel{margin-top:2rem;border-left:2px solid var(--brass-light);padding-left:1.5rem;
+  max-width:56ch}
+.cs-panel > p{font-size:1rem;margin:0}
+.cs-lines{list-style:none;padding:0;margin:1.75rem 0 0;display:grid;gap:1.35rem}
+.cs-lines b{display:block;color:#fff;font-weight:600;font-size:1rem;line-height:1.35}
+.cs-lines span{font-size:.8125rem;color:rgba(237,241,245,.62);line-height:1.5}
+.cs-lines b + span{display:block;margin-bottom:.3rem}
+.cs-lines a,.cs-lines .cs-do{font-size:.9375rem;color:var(--brass-light);
+  text-decoration:none;border-bottom:1px solid rgba(201,174,131,.45)}
+.cs-lines .cs-do{color:rgba(237,241,245,.9);border-bottom:0}
+.cs-lines a:hover,.cs-lines a:focus-visible{border-bottom-color:var(--brass-light)}
+@media (prefers-reduced-motion:reduce){.cs summary{transition:none}}
+
+/* ---------- footer ---------- */
+.foot{background:var(--navy-deep);color:rgba(255,255,255,.6);padding:clamp(3rem,7vw,5rem) 0 3rem;
+  font-size:.875rem}
+.foot-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2.5rem;padding-bottom:2.5rem;
+  border-bottom:1px solid rgba(255,255,255,.16)}
+@media (max-width:760px){.foot-top{grid-template-columns:1fr;gap:2rem}}
+.foot-brand{font-family:var(--disp);font-size:1.75rem;color:#fff;line-height:1.2;margin-bottom:.9rem}
+.foot a{color:rgba(255,255,255,.74);text-decoration:none;display:block;padding:.2rem 0}
+.foot a:hover,.foot a:focus-visible{color:#fff}
+.foot h4{font-size:.625rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  font-family:var(--body);color:var(--brass-light);margin-bottom:.9rem}
+.foot-legal{padding-top:2rem;font-size:.8125rem;line-height:1.9;color:rgba(255,255,255,.5)}
+.foot-legal b{color:rgba(255,255,255,.8);font-weight:600}
+
+/* ---------- doc pages ---------- */
+.doc{max-width:44rem}
+.doc h2{font-size:1.75rem;margin:2.5rem 0 .9rem;color:var(--navy)}
+.doc h2:first-child{margin-top:0}
+.doc p,.doc li{color:var(--slate)}
+.doc ul{padding-left:1.25rem;margin-bottom:1.2em}
+.doc li{padding:.25rem 0}
+
+/* ---------- 404 ---------- */
+.err{min-height:60vh;display:flex;align-items:center;text-align:center}
+.err .wrap{width:100%}
+.err h1{font-size:clamp(3rem,9vw,6rem);font-weight:300;color:var(--navy)}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.band--navy :focus-visible,.band--green :focus-visible,.nav :focus-visible,.foot :focus-visible,
+.hero :focus-visible,.crisis :focus-visible{outline-color:var(--brass-light)}
+
+@media print{
+  .nav,.wave,.crisis,.btn{display:none}
+  body{background:#fff;color:#000;font-size:11pt}
+}
+
+/* ---------- inquiry form: honeypot, busy, error, confirmation ---------- */
+
+/* Honeypot wrapper. Off-canvas rather than display:none — some bots skip
+   fields they can tell are hidden. aria-hidden + tabindex keep it away from
+   assistive tech and the keyboard. */
+.hp{position:absolute!important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+
+.cform .btn[disabled]{opacity:.5;cursor:default;box-shadow:none}
+.cform .btn[disabled]:hover,.cform .btn[disabled]:focus-visible{background:var(--navy);
+  box-shadow:none}
+
+.cform-error{font-size:.9375rem;line-height:1.65;color:#8A2F2F;max-width:48ch;margin:0;
+  padding-left:1rem;border-left:2px solid #8A2F2F}
+
+/* Confirmation panel — takes the form's place in the layout. */
+.cform-done{outline:none;max-width:38rem}
+.cform-done:focus-visible{outline:2px solid var(--brass);outline-offset:8px}
+.cform-done-mark{display:inline-flex;align-items:center;justify-content:center;
+  width:2.75rem;height:2.75rem;border-radius:50%;background:rgba(63,143,94,.12);
+  color:#2E6B45;margin-bottom:1.75rem}
+.cform-done h2{font-size:clamp(1.75rem,3.4vw,2.5rem);font-weight:300;line-height:1.14;
+  color:var(--navy);margin:0 0 1.5rem;max-width:18ch}
+.cform-done h2 em{font-style:italic}
+.cform-done p{font-size:1.0625rem;line-height:1.7;color:var(--slate);margin:0 0 1.25rem;
+  max-width:44ch}
+.cform-done .cform-note{margin-top:1.75rem;padding-top:1.5rem;
+  border-top:1px solid var(--rule)}
+
+/* [hidden] is only a display:none default — any element with an explicit
+   display (like .cform, which is a grid) ignores it. Make it stick. */
+[hidden]{display:none!important}

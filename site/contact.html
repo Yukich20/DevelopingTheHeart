@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a Consultation | Developing The Heart Counseling</title>
+<meta name="description" content="Book a free 30-minute consultation. Telehealth therapy for first responders, veterans, and their families throughout Oregon. Currently accepting new clients.">
+<link rel="canonical" href="https://developingtheheart.com/contact.html">
+<meta name="robots" content="noindex, nofollow"><!-- REMOVE THIS LINE AT LAUNCH -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Developing The Heart Counseling &amp; Consulting">
+<meta property="og:title" content="Book a Consultation | Developing The Heart Counseling">
+<meta property="og:description" content="Book a free 30-minute consultation. Telehealth therapy for first responders, veterans, and their families throughout Oregon. Currently accepting new clients.">
+<meta property="og:url" content="https://developingtheheart.com/contact.html">
+<meta property="og:image" content="https://developingtheheart.com/img/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#101E33">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html"><b>Developing The Heart</b><small>Counseling &amp; Consulting</small></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="menu">Menu</button>
+    <nav class="nav-links" id="menu" aria-label="Main">
+      <a href="about.html">About</a>
+      <a href="beyond-the-uniform.html">Beyond the Uniform</a>
+      <a href="fees.html">Fees &amp; Payment</a>
+      <a class="cta" href="contact.html" aria-current="page">Book a Consultation</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="band band--paper consult">
+  <div class="wrap">
+
+    <div class="rv">
+      <h1>When you're ready, <em>let's talk.</em></h1>
+      <p class="consult-lede">I personally review every inquiry and will be in touch shortly. The first step is a brief consultation. This is a chance for us to connect, have your questions answered, and see whether working together feels like the right fit.</p>
+      <hr class="consult-rule">
+      <p class="consult-fine">I am a private pay therapist and do not accept insurance. If you have out-of-network benefits, I can provide a superbill upon request for you to submit to your insurance company for possible reimbursement.</p>
+    </div>
+
+    <div class="rv">
+      <p class="avail">Currently accepting new clients</p>
+
+      <form class="cform" id="consult-form">
+        <div class="frow">
+          <div class="field">
+            <label for="first">First name</label>
+            <input id="first" name="firstName" type="text" autocomplete="given-name" placeholder="First" maxlength="80" required>
+          </div>
+          <div class="field">
+            <label for="last">Last name</label>
+            <input id="last" name="lastName" type="text" autocomplete="family-name" placeholder="Last" maxlength="80" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone <span class="opt">(optional)</span></label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="(503) 000-0000" maxlength="40">
+        </div>
+        <div class="field">
+          <label for="interest">I'm interested in</label>
+          <select id="interest" name="interest" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="Individual therapy">Individual therapy</option>
+            <option value="Couples therapy">Couples therapy</option>
+            <option value="Family therapy">Family therapy</option>
+            <option value="Not sure - would like to discuss">Not sure &mdash; would like to discuss</option>
+          </select>
+        </div>
+
+        <!-- Honeypot. Hidden from people, irresistible to bots. Do not remove.
+
+             The field name matters. It was `company` originally, which Chrome
+             cheerfully autofilled from the visitor's saved address profile —
+             flagging real people as bots and silently dropping their inquiries.
+             `dth-ref-2` matches no autofill heuristic in any browser. If you
+             ever rename it, pick something equally meaningless, and never a
+             real-world field name like company / address / organisation. -->
+        <div class="hp" aria-hidden="true">
+          <label for="dth-ref-2">Leave this field empty</label>
+          <input id="dth-ref-2" name="dthRef2" type="text" tabindex="-1"
+                 autocomplete="off" aria-hidden="true">
+        </div>
+
+        <button class="btn btn-navy" id="consult-submit" type="submit">Let's connect</button>
+
+        <p class="cform-error" id="consult-error" role="alert" hidden></p>
+      </form>
+
+      <div class="cform-done" id="consult-done" role="status" tabindex="-1" hidden>
+        <span class="cform-done-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" focusable="false"><path d="M4 12.5l5.2 5.2L20 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <h2>Thank you &mdash; <em>your note is on its way.</em></h2>
+        <p>I've received your inquiry and will be in touch within two business days to find a time for your consultation. If you don't hear from me, please check your spam folder before assuming it didn't arrive.</p>
+      </div>
+
+      <div class="cform-foot">
+        connect@<wbr>developingtheheart.com<br>
+        Oregon<span class="sep"></span>Telehealth only
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <p class="foot-brand">Developing The Heart<br>Counseling &amp; Consulting LLC</p>
+        <p style="color:rgba(255,255,255,.65);line-height:1.6;margin:0">Therapy for first responders, veterans,<br>high-stress professionals, and their families (age 14+).<br>Serving clients physically located in Oregon.<br>Telehealth only.</p>
+      </div>
+      <div>
+        <h4>Practice</h4>
+        <a href="about.html">About</a>
+        <a href="beyond-the-uniform.html">Beyond the Uniform</a>
+        <a href="fees.html">Fees &amp; Payment</a>
+        <a href="telehealth.html">Telehealth</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>
+        <h4>Documents</h4>
+        <a href="docs/professional-disclosure-statement.pdf">Professional Disclosure Statement</a>
+        <a href="notice-of-privacy-practices.html">Notice of Privacy Practices</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="fees.html#gfe">Good Faith Estimate</a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <b>Ashley Yukich, MA &mdash; Marriage and Family Therapist Associate</b><br>
+      Registered with the Oregon Board of Licensed Professional Counselors and Therapists &middot; Registration #{{REG_NUMBER}}<br>
+      Supervised by <b>Justin Rock, LMFT/LPC</b> &mdash; LMFT #T2584, LPC #C4650<br>
+      &copy; 2026 Developing The Heart Counseling &amp; Consulting LLC
+    </div>
+  </div>
+</footer>
+<script src="js/main.js" defer></script>
+</body>
+</html>
