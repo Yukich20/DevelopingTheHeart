@@ -311,9 +311,7 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 .faq details[open] summary::after{content:"\2013"}
 .faq .a{padding:0 0 1.5rem;color:var(--slate);max-width:62ch}
 
-/* ---------- book a consult ----------
-   Two columns: the invitation on the left, the inquiry form on the right.
-   No hero on this page, so the band carries the extra top room itself. */
+/* ---------- book a consult ---------- */
 .consult{padding-top:clamp(4rem,9vw,7rem)}
 .consult .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   gap:clamp(2.5rem,7vw,6rem);align-items:start}
@@ -325,6 +323,7 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
   margin:2.5rem 0 0;max-width:36ch}
 .consult-rule{border:0;border-top:1px solid var(--rule);margin:2.75rem 0 1.75rem;max-width:34rem}
 .consult-fine{font-size:.8rem;line-height:1.7;color:var(--stone);max-width:54ch;margin:0}
+.consult-fine em{font-style:italic}
 
 /* availability badge — the one live status signal on the site */
 .avail{display:flex;align-items:center;gap:.65rem;font-size:.6875rem;font-weight:600;
@@ -348,7 +347,7 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 .field input:focus,.field select:focus{border-bottom-color:var(--brass)}
 .field select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:1.75rem;
   background-repeat:no-repeat;background-position:right .2rem center;background-size:.7rem;
-  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%236E767F' stroke-width='1.6'/%3E%3C/svg%3E")}
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%236E767F' stroke-width='1[...")}
 .cform .btn{justify-self:start;margin-top:.5rem}
 .cform-note{font-size:.8125rem;line-height:1.65;color:var(--stone);max-width:48ch;margin:0}
 @media (prefers-reduced-motion:reduce){.field input,.field select{transition:none}}
@@ -479,3 +478,8 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 /* [hidden] is only a display:none default — any element with an explicit
    display (like .cform, which is a grid) ignores it. Make it stick. */
 [hidden]{display:none!important}
+
+/* ---------- AI-free badge in footer ---------- */
+.ai-badge{margin-top:1.25rem;text-align:right}
+.ai-badge img{max-width:160px;height:auto;display:inline-block;filter:none;opacity:.95}
+@media (max-width:640px){.ai-badge{text-align:center}}
