@@ -1,0 +1,31 @@
+# Planning and working docs — never in version control
+planning/
+open-items.md
+questions and answers from Ashley.md
+websites for inspiration
+Claude Code Plugins to Add
+
+# Clinical and client material — hard block, this is PHI
+*.docx
+*.doc
+*.pages
+notes/
+clients/
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Netlify
+.netlify/
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node, in case a build step ever appears
+node_modules/
