@@ -555,6 +555,14 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
 .cred b{color:var(--ink);font-weight:600;display:block;font-size:.6875rem;letter-spacing:.16em;
   text-transform:uppercase;margin-bottom:.5rem}
 .cred .nb{white-space:nowrap}
+/* Narrow screens: at .9375rem the degree line broke after "Family" and the
+   school line after "Education". The longest of the four ("Lewis & Clark
+   Graduate School of Education & Counseling") sets the size, scaled off the
+   viewport so each line sits on one line. min() caps it at the normal size,
+   so nothing changes once there is room for it. */
+@media (max-width:480px){
+  .cred{font-size:min(.9375rem, calc((100vw - 2.5rem) * 0.0375))}
+}
 
 /* ---------- session options ---------- */
 .sessions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;
