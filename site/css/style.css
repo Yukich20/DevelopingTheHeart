@@ -582,7 +582,13 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
    column. .col-end forces the break after a chosen item so the split is where
    it was asked for. Move the class if the list is reordered. */
 .modalities li.col-end{break-after:column;-webkit-column-break-after:column}
-@media (max-width:560px){.modalities{columns:1}}
+/* columns:1 alone is not enough: the forced break on .col-end still opens a
+   second column, which pushed the last four approaches ~272px off-screen and
+   made the whole page scroll sideways. Clear the break here too. */
+@media (max-width:560px){
+  .modalities{columns:1}
+  .modalities li.col-end{break-after:auto;-webkit-column-break-after:auto}
+}
 /* Gold frame, white fill — the shell shared with .fcard and .note on the fees
    page, without their type treatment so it can wrap any block of content. */
 .boxed{border:2px solid var(--brass-light);border-radius:var(--card);background:#fff;
