@@ -98,8 +98,11 @@ ul,ol{margin:0}
   border-radius:var(--pill);
   color:#fff;padding:.65rem 1.1rem;font-size:.6875rem;font-weight:600;letter-spacing:.14em;
   text-transform:uppercase;cursor:pointer}
-/* 1040px, not 940 — "Beyond the Uniform" + "Fees & Payment" need the extra room */
-@media (max-width:1040px){
+/* 1110px: below this the nav links wrap onto two or three lines — the labels
+   ("About Me", "Beyond the Uniform", "Fees & Payment", "Book a
+   Consultation") need more room than they get. Hand off to the menu
+   button before that happens rather than showing a cramped nav. */
+@media (max-width:1110px){
   .nav-toggle{display:block}
   .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;
     align-items:stretch;gap:0;background:var(--navy-deep);padding:.5rem var(--pad) 1.5rem;
