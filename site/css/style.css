@@ -448,7 +448,18 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
   font-size:clamp(1.3125rem,2.4vw,1.6875rem);line-height:1.5;white-space:nowrap}
 .le-wide figcaption .quote-attr{display:inline-block;margin-top:.5rem;
   font-size:clamp(1.125rem,2vw,1.4375rem);line-height:1.5;color:rgba(237,241,245,.78)}
-@media (max-width:700px){.le-wide figcaption{white-space:normal}}
+/* The nowrap above keeps the quote on one line on wide screens. It must be
+   lifted from .quote-text itself here, not just the figcaption: white-space
+   set directly on the child wins over the value it would inherit, so
+   overriding only the parent left the quote unwrapped and pushed the page
+   300px wider than a phone screen.
+
+   720px, not 700: the unwrapped quote needs about 706px, so a 700px
+   breakpoint left a narrow band that still overflowed. */
+@media (max-width:720px){
+  .le-wide figcaption,
+  .le-wide figcaption .quote-text{white-space:normal}
+}
 /* The three closing statements read as a callout rather than body copy: a
    paper-toned tint lifts them off the section's linen background. Sized to
    tuck into the text column beneath the paragraph above it, in the space
