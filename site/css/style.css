@@ -858,6 +858,13 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
    desktop reading is untouched. */
 @media (min-width:475px){.pds-br,.pds-narrow{display:none}}
 @media (max-width:474px){.pds-wide{display:none}}
+/* Business name on one line on narrow screens: it needs about 400px at the
+   surrounding 17px, so the size is scaled off the viewport to fit whatever
+   width is available. No nowrap — if the sum ever came up short it should
+   wrap rather than push the page wider than the screen. */
+@media (max-width:474px){
+  .pds-oneline{font-size:min(1.0625rem, calc((100vw - 2.5rem) * 0.0415))}
+}
 /* Notice of Privacy Practices only. The reading column normally centers itself
    independently of the nav's 1160px wrap, so its left AND right edges sit
    further in than the nav content on wide screens. This keeps the column's
