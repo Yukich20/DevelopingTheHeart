@@ -119,6 +119,14 @@ ul,ol{margin:0}
   border-radius:var(--pill);
   transition:background .2s ease,color .2s ease,transform .2s ease,box-shadow .2s ease;cursor:pointer}
 .btn:hover{transform:translateY(-1px)}
+/* Hero CTA on phones: "Book a free 30-minute consultation" wrapped after
+   "minute". The .14em tracking alone accounted for ~57px of its width, so
+   tightening that and the side padding buys enough room without shrinking
+   the type, which matters more on the main call to action. Only index has a
+   button in its hero. */
+@media (max-width:480px){
+  .hero .btn{letter-spacing:.05em;padding-left:1.3rem;padding-right:1.3rem}
+}
 .btn-solid{background:#fff;color:var(--navy);box-shadow:0 1px 2px rgba(16,30,51,.10)}
 .btn-solid:hover,.btn-solid:focus-visible{background:var(--sand);box-shadow:0 8px 22px rgba(16,30,51,.18)}
 .btn-navy{background:var(--navy);color:#fff;box-shadow:0 1px 2px rgba(16,30,51,.14)}
