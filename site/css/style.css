@@ -877,10 +877,20 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
 .err .wrap{width:100%}
 .err h1{font-size:clamp(3rem,9vw,6rem);font-weight:300;color:var(--navy)}
 
-/* ---------- reveal ---------- */
+/* ---------- reveal (DISABLED) ----------
+   Elements marked .rv used to start invisible and 16px low, then fade and
+   slide up as they scrolled into view. Turned off because sections below the
+   fold read as blank until scrolled to, which made the page look unfinished.
+
+   Everything now renders immediately. The .rv class is still on the markup
+   and main.js still adds .in, both harmless while these rules are commented
+   out — so restoring the effect is just uncommenting the three lines below.
+   For something subtler, shorten .7s (e.g. .35s) and/or reduce the 16px.
+
 .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+   ------------------------------------------------------------------------ */
 
 :focus-visible{outline:2px solid var(--brass);outline-offset:3px}
 .band--navy :focus-visible,.band--green :focus-visible,.nav :focus-visible,.foot :focus-visible,
