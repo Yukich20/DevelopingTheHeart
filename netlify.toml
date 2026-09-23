@@ -2,18 +2,7 @@
 #
 # The site is a static folder with no build step. `publish` points at it
 # directly; there is nothing to compile.
-#
-# The edge function below puts a password prompt in front of EVERY path while
-# the practice waits on OBLPCT registration. See netlify/edge-functions/auth.js
-# for how to set the credentials, and delete both this block and that file at
-# launch.
 
 [build]
   publish = "site"
   command = ""
-
-# Password wall. `path = "/*"` covers pages, CSS, JS, and images — nothing is
-# served to an unauthenticated visitor, including a direct link to an image.
-[[edge_functions]]
-  function = "auth"
-  path = "/*"
