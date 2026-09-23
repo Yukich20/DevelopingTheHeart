@@ -856,7 +856,7 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
    comma after "STE R" since the city then starts its own line. Above 474px
    nothing applies — the breaks are hidden and the comma returns, so the
    desktop reading is untouched. */
-@media (min-width:475px){.pds-br{display:none}}
+@media (min-width:475px){.pds-br,.pds-narrow{display:none}}
 @media (max-width:474px){.pds-wide{display:none}}
 /* Notice of Privacy Practices only. The reading column normally centers itself
    independently of the nav's 1160px wrap, so its left AND right edges sit
