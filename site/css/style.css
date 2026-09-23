@@ -64,7 +64,11 @@ ul,ol{margin:0}
 .skip:focus{left:0}
 
 /* ---------- header / nav ---------- */
-.nav{background:var(--navy-deep);border-bottom:1px solid rgba(255,255,255,.14)}
+/* position/z-index so the mobile dropdown (.nav-links, position:absolute;
+   top:100%) anchors to the header itself. Without a positioned ancestor it
+   anchored to the viewport instead, opening 100% of screen height down —
+   off-screen — on every page except the hero pages using .nav--over. */
+.nav{position:relative;z-index:40;background:var(--navy-deep);border-bottom:1px solid rgba(255,255,255,.14)}
 .nav--over{position:absolute;top:0;left:0;right:0;z-index:40;background:transparent;
   border-bottom:1px solid rgba(255,255,255,.16)}
 .nav-in{display:flex;align-items:center;gap:2rem;min-height:86px}
