@@ -30,7 +30,7 @@
  * Code.gs does NOT update the live endpoint until you push a new version, and
  * that gap has already cost one debugging session.
  */
-var VERSION = 'v5-2026-08-14';
+var VERSION = 'v7-2026-09-02';
 
 /** Where inquiries are delivered. */
 var TO_ADDRESS = 'ashley@developingtheheart.com';
@@ -75,8 +75,7 @@ var MAX_PER_HOUR = 3;
 var INTERESTS = [
   'Individual therapy',
   'Couples therapy',
-  'Family therapy',
-  'Not sure - would like to discuss'
+  'Family therapy'
 ];
 
 var MAX_LEN = {
@@ -85,6 +84,39 @@ var MAX_LEN = {
   email: 254,
   phone: 40,
   interest: 60
+};
+
+// --- Speaking engagement requests (site/speaking.html) ----------------------
+
+/** Filename of the speaking-request log. Separate from the consult inquiry log:
+ *  these are different things and mixing them makes both harder to read. */
+var SPEAKING_SHEET_NAME = 'Speaking requests (website)';
+
+/** Script Property holding the speaking log's ID. Set by createSpeakingLog(). */
+var SPEAKING_SHEET_ID_KEY = 'SPEAKING_SHEET_ID';
+
+var SPEAKING_HEADERS = [
+  'Received', 'First name', 'Last name', 'Organization', 'Role',
+  'Email', 'Phone', 'Format', 'Topics', 'Date', 'Length', 'Location',
+  'Audience', 'Budget', 'Details', 'Heard via', 'Flagged', 'Status', 'Notes'
+];
+
+var SPEAKING_MAX_LEN = {
+  firstName: 80,
+  lastName: 80,
+  organization: 140,
+  role: 120,
+  email: 254,
+  phone: 40,
+  format: 60,
+  topics: 500,
+  eventDate: 120,
+  length: 80,
+  location: 180,
+  audience: 180,
+  budget: 60,
+  details: 4000,
+  referral: 180
 };
 
 // ---------------------------------------------------------------------------
@@ -100,6 +132,10 @@ function doGet() {
     ok: true,
     service: 'consult-inquiry',
     version: VERSION,
+    // If `routes` is missing from this response, the live deployment predates
+    // the speaking request form and speaking.html submissions will be rejected.
+    // Push a new version to fix it.
+    routes: ['consult', 'speaking'],
     tokenFingerprint: FORM_TOKEN.slice(0, 4) + '…' + FORM_TOKEN.slice(-4),
     deliversTo: TO_ADDRESS,
     mailQuotaRemaining: MailApp.getRemainingDailyQuota()
@@ -199,6 +235,17 @@ function doPost(e) {
         'discarded. Make FORM_TOKEN identical in Code.gs and main.js, then ' +
         'redeploy (Deploy > Manage deployments > pencil > New version).'
       );
+    }
+
+    // --- Route. --------------------------------------------------------- ---
+    // --- The speaking request form shares this endpoint, the token and all ---
+    // --- three bot checks above, but nothing below them: its fields are    ---
+    // --- different. An older deployment that predates this branch falls    ---
+    // --- through and reads the request as a consult inquiry, rejecting it  ---
+    // --- on a field the form does not have — which is the symptom to look  ---
+    // --- for if the site says a request failed to send.                    ---
+    if (String(data.formType || '') === 'speaking') {
+      return handleSpeaking(data, suspiciouslyFast);
     }
 
     // --- Validation. These DO report failure — a real person mistyping ---
@@ -393,6 +440,188 @@ function getLogSheet() {
     return null;
   }
   return SpreadsheetApp.openById(id).getSheetByName('Inquiries');
+}
+
+// ---------------------------------------------------------------------------
+// Speaking engagement requests
+// ---------------------------------------------------------------------------
+
+/**
+ * Handles a submission from site/speaking.html.
+ *
+ * Called by doPost AFTER the honeypot, timing and token checks have run, so it
+ * only concerns itself with the form's own fields.
+ *
+ * Unlike a consult inquiry this is a business enquiry, not a clinical one: it
+ * carries no health information, so it is logged in full and quoted in full in
+ * the notification email.
+ */
+function handleSpeaking(data, suspiciouslyFast) {
+  var firstName = clean(data.firstName, SPEAKING_MAX_LEN.firstName);
+  var lastName = clean(data.lastName, SPEAKING_MAX_LEN.lastName);
+  var email = clean(data.email, SPEAKING_MAX_LEN.email);
+  var details = clean(data.details, SPEAKING_MAX_LEN.details);
+
+  if (!firstName || !lastName) {
+    return json({ ok: false, error: 'name_required' });
+  }
+  if (!isEmail(email)) {
+    return json({ ok: false, error: 'email_invalid' });
+  }
+  if (!details) {
+    return json({ ok: false, error: 'details_required' });
+  }
+  if (overRateLimit(email)) {
+    return json({ ok: false, error: 'rate_limited' });
+  }
+
+  var request = {
+    firstName: firstName,
+    lastName: lastName,
+    organization: clean(data.organization, SPEAKING_MAX_LEN.organization),
+    role: clean(data.role, SPEAKING_MAX_LEN.role),
+    email: email,
+    phone: clean(data.phone, SPEAKING_MAX_LEN.phone),
+    format: clean(data.format, SPEAKING_MAX_LEN.format),
+    topics: clean(data.topics, SPEAKING_MAX_LEN.topics),
+    eventDate: clean(data.eventDate, SPEAKING_MAX_LEN.eventDate),
+    length: clean(data.length, SPEAKING_MAX_LEN.length),
+    location: clean(data.location, SPEAKING_MAX_LEN.location),
+    audience: clean(data.audience, SPEAKING_MAX_LEN.audience),
+    budget: clean(data.budget, SPEAKING_MAX_LEN.budget),
+    details: details,
+    referral: clean(data.referral, SPEAKING_MAX_LEN.referral),
+    receivedAt: new Date(),
+    flagged: suspiciouslyFast
+  };
+
+  sendSpeakingNotification(request);
+
+  try {
+    appendSpeakingToLog(request);
+  } catch (logErr) {
+    console.error('speaking request emailed but not logged: ' + logErr);
+  }
+
+  console.log('SPEAKING REQUEST HANDED TO MAIL: ' + firstName + ' ' + lastName +
+    ' <' + email + '> — ' + (request.organization || '(no org)') +
+    ' | quota left: ' + MailApp.getRemainingDailyQuota());
+
+  return json({ ok: true });
+}
+
+function sendSpeakingNotification(f) {
+  var fullName = f.firstName + ' ' + f.lastName;
+
+  var lines = [
+    'New speaking engagement request from developingtheheart.com',
+    '',
+    'Name         ' + fullName,
+    'Organization ' + (f.organization || '(not given)'),
+    'Role         ' + (f.role || '(not given)'),
+    'Email        ' + f.email,
+    'Phone        ' + (f.phone || '(not provided)'),
+    '',
+    'Format       ' + (f.format || '(not specified)'),
+    'Topics       ' + (f.topics || '(none selected)'),
+    'Date         ' + (f.eventDate || '(not given)'),
+    'Length       ' + (f.length || '(not given)'),
+    'Location     ' + (f.location || '(not given)'),
+    'Audience     ' + (f.audience || '(not given)'),
+    'Budget       ' + (f.budget || '(not answered)'),
+    'Heard via    ' + (f.referral || '(not given)'),
+    'Received     ' + Utilities.formatDate(
+      f.receivedAt, TIMEZONE, "EEEE, MMMM d, yyyy 'at' h:mm a"
+    ),
+    '',
+    'About the event',
+    '---------------',
+    f.details,
+    '',
+    '---',
+    'Reply directly to this message to reach ' + f.firstName + '.',
+    '',
+    'A copy has been logged to "' + SPEAKING_SHEET_NAME + '" in your Drive.'
+  ];
+
+  if (f.flagged) {
+    lines.splice(1, 0,
+      '',
+      '! Submitted unusually fast. Often a bot, but also what autofill looks',
+      '  like. Delivered rather than dropped so you can judge it yourself.');
+  }
+
+  MailApp.sendEmail({
+    to: TO_ADDRESS,
+    replyTo: f.email,
+    name: FROM_NAME,
+    subject: (f.flagged ? '[possible spam] ' : '') +
+      'Speaking request — ' + (f.organization || fullName),
+    body: lines.join('\n')
+  });
+}
+
+/**
+ * RUN THIS ONCE from the Apps Script editor before the speaking form goes live.
+ *
+ * Creates the request log in Drive and remembers its ID. Safe to run again — an
+ * existing log is reported rather than duplicated. Mirrors createInquiryLog.
+ */
+function createSpeakingLog() {
+  var props = PropertiesService.getScriptProperties();
+  var existing = props.getProperty(SPEAKING_SHEET_ID_KEY);
+
+  if (existing) {
+    try {
+      var found = SpreadsheetApp.openById(existing);
+      console.log('Speaking log already exists: ' + found.getUrl());
+      return;
+    } catch (err) {
+      console.warn('Stored speaking log ID no longer opens. Creating a new one.');
+    }
+  }
+
+  var ss = SpreadsheetApp.create(SPEAKING_SHEET_NAME);
+  var sheet = ss.getSheets()[0].setName('Requests');
+
+  sheet.getRange(1, 1, 1, SPEAKING_HEADERS.length)
+    .setValues([SPEAKING_HEADERS])
+    .setFontWeight('bold')
+    .setBackground('#1D2E49')
+    .setFontColor('#FFFFFF');
+  sheet.setFrozenRows(1);
+
+  props.setProperty(SPEAKING_SHEET_ID_KEY, ss.getId());
+  console.log('Speaking log created: ' + ss.getUrl());
+}
+
+/**
+ * Appends one request. Called inside a try/catch by handleSpeaking — throwing
+ * here costs the log row, never the email or the sender's confirmation.
+ */
+function appendSpeakingToLog(f) {
+  var sheet = getSpeakingSheet();
+  if (!sheet) {
+    throw new Error('No speaking log configured. Run createSpeakingLog() once.');
+  }
+
+  sheet.appendRow([
+    f.receivedAt, f.firstName, f.lastName, f.organization, f.role,
+    f.email, f.phone, f.format, f.topics, f.eventDate, f.length,
+    f.location, f.audience, f.budget, f.details, f.referral,
+    f.flagged ? 'possible spam' : '',
+    '',  // Status — for Ashley to fill in
+    ''   // Notes  — for Ashley to fill in
+  ]);
+}
+
+function getSpeakingSheet() {
+  var id = PropertiesService.getScriptProperties()
+    .getProperty(SPEAKING_SHEET_ID_KEY);
+  if (!id) {
+    return null;
+  }
+  return SpreadsheetApp.openById(id).getSheetByName('Requests');
 }
 
 // ---------------------------------------------------------------------------

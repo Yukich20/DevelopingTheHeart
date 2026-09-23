@@ -99,11 +99,13 @@ pre-licensed associate status
 
 ### 1.7 `[ASHLEY]` Professional Disclosure Statement approved by the Board
 
-Drafted already. It requires Board approval, and it's linked in the site footer.
+Written and live at `site/professional-disclosure-statement.html` (a page now,
+not a PDF — see item 4.1). It requires Board approval, and it's linked in the
+site footer of every page.
 
-* [ ] Submitted
+* [ ] Reviewed by Justin
+* [ ] Submitted to the Board
 * [ ] Approved
-* [ ] PDF placed in `site/docs/professional-disclosure-statement.pdf`
 
 ---
 
@@ -182,8 +184,28 @@ aimed at a holding page. DNS can take 48 hours.
 
 ### 3.5 `[KENNY]` At launch — two switches
 
-* [ ] Delete `<meta name="robots" content="noindex, nofollow">` from all 9 pages
+* [ ] Delete `<meta name="robots" content="noindex, nofollow">` from all 11 pages
 * [ ] Delete `Disallow: /` from `robots.txt`
+
+### 3.6 `[KENNY]` Speaking request form backend — PARKED, do not deploy yet
+
+**On hold.** The footer link was removed on 2026-09-02, so `speaking.html`
+exists but nothing on the site points to it. Leave the checklist below unrun
+until Ashley decides to bring the page back — there is no reason to deploy a
+backend for a form no visitor can reach.
+
+`site/speaking.html` posts to the same Apps Script endpoint as the consult form,
+tagged `formType: "speaking"`. The routing for that tag was added to
+`apps-script/Code.gs` in v7, but **editing Code.gs does not change the live
+endpoint** — until a new version is pushed, every speaking request is read as a
+consult inquiry and rejected, which the sender sees as "something went wrong".
+
+* [ ] Paste the current `apps-script/Code.gs` into the Apps Script editor
+* [ ] Run `createSpeakingLog()` once, from the editor, to create the log sheet
+* [ ] Deploy > Manage deployments > pencil > New version
+* [ ] Confirm: open the endpoint URL in a browser — the health check must report
+`"version":"v7-…"` and a `routes` array containing `speaking`
+* [ ] Send one test request through the live form and confirm the email arrives
 
 ---
 
@@ -192,6 +214,26 @@ aimed at a holding page. DNS can take 48 hours.
 ### 4.1 `[ASHLEY]` Copy and assets
 
 * [ ] About page — final 1–2 paragraphs in her own voice
+* [ ] "Who I work with" photos — ten frames on the homepage are placeholders
+waiting on pictures: Fire, Police, Dispatch, Healthcare, Business owner,
+Lawyer, Military/veteran, Air traffic control/pilots, Spouses & family,
+Other. **Portrait orientation** (the frame crops to 3:4) and **under ~400KB
+each** — a page of ten full-size phone photos would be slower than the rest
+of the site put together. Licensed stock or her own; the markup to swap in
+is written in a comment above the grid in `index.html`.
+* [x] Professional Disclosure Statement — written, at
+`site/professional-disclosure-statement.html`. Still needs her supervisor's
+and the Board's sign-off before launch, and gates on OBLPCT registration
+(item 1.1) like everything else. **Now write the confidentiality answer on
+the FAQ page as this statement's plain-language version** — its rights
+section is the source of truth for what that answer should say.
+* [ ] Terms of Service — now a page, `site/terms-of-service.html`, not a PDF.
+The section headings are in place and empty, and the footer links to it from
+every page. Needs writing and review before launch.
+* [ ] AI-free badge artwork — Ashley is making an image. Once it lands, drop
+it in `site/img/`, then add one `<a class="foot-badge foot-badge--img">`
+beside the Psychology Today seal in **all 11 footers** (the footer block is
+duplicated per page). The `--img` style sizes it to 56px tall automatically.
 * [ ] Portrait photograph **← longest lead time. Book a photographer this week.**
 This is likely the highest-return few hundred dollars in the launch.
 * [ ] Social share image (1200×630) for `img/og-image.jpg`

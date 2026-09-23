@@ -51,7 +51,8 @@ img{max-width:100%;display:block;height:auto}
 ul,ol{margin:0}
 
 .wrap{max-width:var(--wrap);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
-.eyebrow{font-family:var(--body);font-size:.6875rem;font-weight:600;letter-spacing:.22em;
+/* One size everywhere — hero and section eyebrows alike. */
+.eyebrow{font-family:var(--body);font-size:.8rem;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:var(--brass);display:block;margin:0 0 1.5rem}
 .on-dark .eyebrow,.band--navy .eyebrow,.band--green .eyebrow{color:var(--brass-light)}
 .visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
@@ -67,6 +68,16 @@ ul,ol{margin:0}
 .nav--over{position:absolute;top:0;left:0;right:0;z-index:40;background:transparent;
   border-bottom:1px solid rgba(255,255,255,.16)}
 .nav-in{display:flex;align-items:center;gap:2rem;min-height:86px}
+/* The header runs wider than the 1160px content column so the links sit out
+   past it, but not all the way to the window edge. The left padding lands
+   exactly where the content column starts, keeping the brand lined up with the
+   headline beneath it; the right padding gives back half the gutter, putting
+   the links midway between the content edge and the window edge. Below the
+   content width both sides collapse to the normal page padding, so nothing
+   changes on narrow screens. */
+.nav > .wrap{max-width:none;
+  padding-left:max(var(--pad),calc((100% - var(--wrap)) / 2 + var(--pad)));
+  padding-right:max(var(--pad),calc((100% - var(--wrap)) / 4 + var(--pad)))}
 .brand{text-decoration:none;color:#fff;line-height:1.15;flex-shrink:0}
 .brand b{font-family:var(--disp);font-weight:500;font-size:1.5rem;display:block}
 .brand small{font-size:.5625rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
@@ -105,6 +116,32 @@ ul,ol{margin:0}
 .btn-solid:hover,.btn-solid:focus-visible{background:var(--sand);box-shadow:0 8px 22px rgba(16,30,51,.18)}
 .btn-navy{background:var(--navy);color:#fff;box-shadow:0 1px 2px rgba(16,30,51,.14)}
 .btn-navy:hover,.btn-navy:focus-visible{background:var(--navy-mid);box-shadow:0 8px 22px rgba(16,30,51,.22)}
+/* Navy button that flips to the outlined look on hover: sand fill, navy rule,
+   navy type. Scoped to a modifier so the navy buttons elsewhere keep their own
+   hover. `border-color` needs setting explicitly — the base .btn carries a
+   transparent border, so the outline exists but is invisible until coloured. */
+.btn-navy.btn-navy--invert:hover,.btn-navy.btn-navy--invert:focus-visible{
+  background:var(--sand);color:var(--navy);border-color:var(--navy);
+  box-shadow:0 6px 18px rgba(16,30,51,.14)}
+/* Navy button lettered in gold, turning white on hover with the fill staying
+   put. The background is re-declared on hover because `.btn-navy:hover` lightens
+   it otherwise, and here only the type is meant to change. The arrow inherits
+   the colour through currentColor, so it changes with the words. */
+.btn-navy.btn-navy--gold{color:var(--brass-light)}
+.btn-navy.btn-navy--gold:hover,.btn-navy.btn-navy--gold:focus-visible{
+  background:var(--navy);color:#fff;
+  box-shadow:0 8px 22px rgba(16,30,51,.22)}
+
+/* In-page jump: the arrow says the link moves you down the page rather than
+   off it. It nudges on hover, which reads as the scroll about to happen. */
+.jump{margin:2rem 0 0;text-align:center}
+.jump .btn{display:inline-flex;align-items:center;gap:.6rem}
+.jump .btn svg{width:1.05em;height:1.05em;fill:none;stroke:currentColor;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .2s ease}
+.jump .btn:hover svg,.jump .btn:focus-visible svg{transform:translateY(2px)}
+@media (prefers-reduced-motion:reduce){.jump .btn svg{transition:none}}
+@media (prefers-reduced-motion:reduce){.btn-navy.btn-navy--invert{transition:none}}
 .btn-line{border-color:rgba(255,255,255,.5);color:#fff}
 .btn-line:hover,.btn-line:focus-visible{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.8)}
 .btn-line-dark{border-color:var(--navy);color:var(--navy)}
@@ -114,7 +151,14 @@ ul,ol{margin:0}
 /* ---------- wavy section transitions ----------
    <div class="wave" style="--from:<color above>;--to:<color below>">
    .wave--over sits inside a photo hero and carves the next section's color out of it. */
+/* The 1px pull-up closes a hairline seam. The wave is a box filled with --from
+   with the --to colour painted as an SVG path down to the box's bottom edge;
+   where that edge lands on a fractional device pixel the browser antialiases it,
+   letting a sliver of --from show as a light line across the full width. Sliding
+   the following section up by a pixel covers it. Not applied to .wave--over,
+   which is absolutely positioned inside a hero and has no such seam. */
 .wave{background:var(--from,transparent);line-height:0;font-size:0}
+.wave:not(.wave--over){margin-bottom:-1px}
 .wave svg{display:block;width:100%;height:var(--wave-h)}
 .wave svg path{fill:var(--to)}
 .wave--over{position:absolute;left:0;right:0;bottom:0;z-index:3;background:transparent}
@@ -138,10 +182,37 @@ ul,ol{margin:0}
 .hero h1{font-size:clamp(2.5rem,6.2vw,4.75rem);font-weight:300;line-height:1.07;max-width:40rem}
 .hero--short h1{font-size:clamp(2.25rem,5vw,3.75rem)}
 .hero h1 em{font-style:italic}
-.hero .eyebrow{font-size:.8rem}
-.hero-sub{font-size:clamp(1.0625rem,1.8vw,1.25rem);color:rgba(255,255,255,.88);
+/* The one word the sentence is actually about, breaking out of the italic
+   flow around it — upright, larger, and gold, so it reads loud on the page
+   the way the word means. */
+.hero h1 .loud-word{font-family:'Playfair Display',serif;font-style:italic;
+  font-weight:900;color:var(--brass-light);font-size:1.2em;letter-spacing:.01em}
+/* A link inside a hero headline. With no rule beneath it, colour alone marks it
+   as clickable, so it brightens to white on hover rather than shifting a
+   border. */
+.hero h1 a{color:var(--brass-light);text-decoration:none;transition:color .2s}
+.hero h1 a:hover,.hero h1 a:focus-visible{color:#fff}
+@media (prefers-reduced-motion:reduce){.hero h1 a{transition:none}}
+/* Same brightening effect as the link above, but on plain text that goes
+   nowhere — used where the email address is already given elsewhere on the
+   page, so this phrase doesn't need to be a second, redundant link. */
+.hero h1 .hero-hover{color:var(--brass-light);transition:color .2s}
+.hero h1 .hero-hover:hover{color:#fff}
+@media (prefers-reduced-motion:reduce){.hero h1 .hero-hover{transition:none}}
+/* Opt a hero headline out of the 40rem measure so it spans the full band. */
+.hero h1.h1--wide{max-width:none}
+/* Second line of a two-part headline: set smaller so a long supporting clause
+   fits on one line at the width the band actually has. */
+.hero h1 .h1-sub{display:block;font-size:.56em;line-height:1.15;margin-top:.4em}
+/* Tan rather than white so the headline above — the one line meant to stand
+   out — is the only white text in the hero. */
+.hero-sub{font-size:clamp(1.0625rem,1.8vw,1.25rem);color:var(--brass-light);
   margin:1.75rem 0 2.5rem;max-width:34rem;line-height:1.65}
 .hero-cta{display:flex;gap:.75rem;flex-wrap:wrap}
+/* Availability under the hero's call to action: quieter than .hero-sub above
+   the button, so it reads as practical detail rather than a second pitch. */
+.hero-hours{margin:1.6rem 0 0;font-size:clamp(1.0625rem,1.6vw,1.1875rem);
+  line-height:1.65;color:rgba(255,255,255,.92)}
 @media (max-width:640px){
   .hero .hero-photo{object-position:center 50%}
   .hero .scrim{background:linear-gradient(100deg,rgba(9,20,36,.95) 0%,rgba(9,20,36,.82) 65%,rgba(9,20,36,.5) 100%)}
@@ -155,7 +226,14 @@ ul,ol{margin:0}
    divider above/below meets a flat colour and leaves no visible seam */
 .band--paper{background:var(--paper);
   background-image:radial-gradient(72% 58% at 12% 50%,rgba(126,98,54,.07),transparent 70%)}
+/* Flat paper, no glow — for sections where a divider cuts through the middle
+   rather than sitting at the top/bottom edge the glow is sized to clear. */
+.band--paper-flat{background-image:none}
 .band--linen{background:linear-gradient(180deg,var(--linen) 0%,var(--sand) 100%)}
+/* Trimmed to about two-thirds of the standard band padding: the quote beneath
+   the fireground photo already reads as a natural close to the section, so
+   the usual amount of empty space below it felt like too much air. */
+#lived-experience{padding-top:clamp(1.5rem,3.1vw,2.67rem);padding-bottom:clamp(2.25rem,4.7vw,4rem)}
 .band--sand{background:var(--sand)}
 .band--navy{background:var(--navy);color:#EDF1F5;
   background-image:radial-gradient(60% 56% at 84% 50%,rgba(201,174,131,.12),transparent 70%)}
@@ -165,7 +243,28 @@ ul,ol{margin:0}
 .band--center h2.head,.band--center .lede{max-width:20ch;margin-left:auto;margin-right:auto}
 .band--center .prose{max-width:42rem;margin:0 auto}
 .band--center .two{grid-template-columns:1fr;justify-items:center;gap:1.5rem}
+/* Where two bands of the same colour run together they read as one area, so
+   the full padding on both facing edges becomes dead space. These halve it. */
+.band--tight-bottom{padding-bottom:clamp(1.625rem,3.5vw,3rem)}
+.band--tight-top{padding-top:clamp(1.625rem,3.5vw,3rem)}
+/* A step tighter again, for the About page's portrait and Lupa sections, which
+   sit closer together than the tight pair above. */
+.band--tighter-bottom{padding-bottom:clamp(1.1rem,2.3vw,2rem)}
+.band--tighter-top{padding-top:clamp(1.1rem,2.3vw,2rem)}
 h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-height:1.1}
+/* A heading set as terms rather than a statement: the eyebrow's brass and caps,
+   a touch smaller than a normal heading and run on one line. Letter-spacing is
+   eased off — the eyebrow's .22em is tuned for 12px type and reads as gaps at
+   this scale. The measure is dropped so the line does not wrap.
+
+   The colour rules below need the extra class to bite: `.band--navy h2.head`
+   sets white at equal specificity and sits later in this file, so a plainer
+   selector loses to it and the heading comes out white. */
+h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
+  max-width:none;font-size:clamp(1.5rem,3.6vw,2.7rem);color:var(--brass)}
+.band--center h2.head--terms{max-width:none}
+.band--navy h2.head.head--terms,
+.band--green h2.head.head--terms{color:var(--brass-light)}
 .band--navy h2.head,.band--green h2.head{color:#fff}
 .two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
   gap:clamp(2rem,6vw,5rem);align-items:start}
@@ -173,14 +272,136 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 .prose p{color:var(--slate)}
 .band--navy .prose p,.band--green .prose p{color:rgba(237,241,245,.84)}
 .prose strong{color:var(--ink);font-weight:600}
+/* Links inside body copy on a light band. Brass rather than an underline, to
+   match the treatment used in the FAQ answers; the underline appears on hover
+   so there is still a visible response to the pointer.
+
+   :not(.btn) on every rule below matters: a real button (Book a Consultation,
+   say) sometimes sits inside a <p> inside .prose because that is where the
+   surrounding copy lives, not because it is meant to read as an inline link.
+   Without the exclusion, .band--navy .prose p a's higher specificity beat
+   .btn-solid's own colour and silently turned button text brass-light. */
+.prose p a:not(.btn){color:var(--brass);font-weight:600;text-decoration:none;
+  border-bottom:1px solid transparent;transition:border-color .2s}
+.prose p a:not(.btn):hover,.prose p a:not(.btn):focus-visible{border-bottom-color:var(--brass)}
+/* A link with no rule at all: brass, and darkening to navy on hover rather
+   than growing an underline. The hover rule has to re-assert the transparent
+   border, or the underline from `.prose p a:hover` above comes back. */
+.prose p a.link-plain{border-bottom-color:transparent}
+.prose p a.link-plain:hover,.prose p a.link-plain:focus-visible{
+  color:var(--navy);border-bottom-color:transparent}
+/* Same link on a dark band: the light brass, since the dark one used above
+   sits too close to the navy to read. */
+.band--navy .prose p a:not(.btn),.band--green .prose p a:not(.btn){color:var(--brass-light)}
+.band--navy .prose p a:not(.btn):hover,.band--navy .prose p a:not(.btn):focus-visible,
+.band--green .prose p a:not(.btn):hover,.band--green .prose p a:not(.btn):focus-visible{
+  border-bottom-color:var(--brass-light)}
+@media (prefers-reduced-motion:reduce){.prose p a:not(.btn){transition:none}}
+/* The closing invitation in a section — a shade larger than the copy around it,
+   with no rule beneath. Colour and weight carry it; the underline appears only
+   on hover, so there is still a response to the pointer. */
+.prose p a.cta-inline{font-size:1.06em;border-bottom-color:transparent}
+.prose p a.cta-inline:hover,
+.prose p a.cta-inline:focus-visible{border-bottom-color:transparent;color:var(--navy)}
+/* Outlined heart closing a sentence. Sized in em so it tracks the text it
+   follows, and drawn rather than typed so it is a shape, not a font glyph that
+   might land as an emoji on some devices. */
+.heart-mark{display:inline-block;width:.95em;height:.95em;vertical-align:-.1em;
+  margin-left:.3em;fill:none;stroke:var(--brass);stroke-width:1.9;
+  stroke-linejoin:round;stroke-linecap:round}
+/* A .lede running the full content width above a two-column block, rather than
+   sitting inside one column. Its usual 26ch measure is meant for a standalone
+   line, so it comes off; the size is nudged up to hold the wider space, and the
+   heart's stroke thins as it scales with the type. */
+.how-cols{margin-top:clamp(2.25rem,4.5vw,3.5rem)}
+.how-cols .portrait{height:100%;aspect-ratio:auto}
+/* Guided meditation sample, under the Nepal photo. A row card matching .boxed's
+   frame (white, brass border) rather than a bare audio tag, so it reads as a
+   deliberate feature rather than a leftover control. Disabled until the real
+   recording exists — dimmed and inert, same spirit as the photo placeholders
+   elsewhere on this page. */
+.meditation{display:flex;align-items:center;gap:1rem;margin-top:1.25rem;
+  padding:.9rem 1.1rem;border:2px solid var(--brass-light);border-radius:var(--card);
+  background:#fff}
+.meditation-play{flex:none;display:flex;align-items:center;justify-content:center;
+  width:2.75rem;height:2.75rem;border-radius:50%;border:1.5px solid var(--navy);
+  background:none;padding:0;cursor:pointer;transition:background .2s,opacity .2s}
+.meditation-play svg{width:1.1rem;height:1.1rem;fill:var(--navy);margin-left:.15rem}
+.meditation-play:hover,.meditation-play:focus-visible{background:var(--sand)}
+.meditation-play[disabled]{border-color:var(--rule);cursor:default;opacity:.55}
+.meditation-play[disabled] svg{fill:var(--stone)}
+.meditation-play[disabled]:hover{background:none}
+.meditation-text{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.meditation-label{font-size:.625rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--brass)}
+.meditation-title{font-family:var(--disp);font-style:italic;font-size:1.1875rem;
+  font-weight:500;color:var(--navy);line-height:1.25}
+.meditation-note{font-size:.75rem;color:var(--stone)}
+@media (prefers-reduced-motion:reduce){.meditation-play{transition:none}}
 .band--navy .prose strong,.band--green .prose strong{color:#fff}
 .lede{font-family:var(--disp);font-size:clamp(1.5rem,3.2vw,2.25rem);font-weight:300;
   line-height:1.34;color:var(--navy);max-width:26ch}
+/* The statement version: runs the full content width above a two-column block
+   instead of sitting inside one column, and carries real weight — this line is
+   the practice's whole premise, not an intro.
 
-/* ---------- role list (chips) ---------- */
-.roles{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:2.25rem;list-style:none;padding:0}
-.roles li{border:1px solid var(--rule);border-radius:var(--pill);background:#fff;
-  padding:.5rem 1.05rem;font-size:.875rem;color:var(--slate);line-height:1.4}
+   The second sentence carries the base size — 2.6rem is the largest at which it
+   still holds one line across the measure.
+
+   Must stay AFTER .lede: the two have equal specificity, so source order is what
+   decides the override. */
+.lede--wide{max-width:none;margin:0;font-weight:600;line-height:1.16;
+  font-size:clamp(1.5rem,3.5vw,2.6rem)}
+.lede--wide .heart-mark{stroke-width:2.2;margin-left:.18em;flex:none}
+/* Each sentence is its own block, so they always break one per line rather than
+   wherever the text happens to run out. The first is the setup, so it sits a
+   step smaller than the second; the second is the one pinned at the largest size
+   that holds one line, and the first is sized down from there. */
+.lede--wide .lede-a{display:block;font-size:.82em}
+/* A flex row so the heart sits on the text's baseline right after it. The text
+   is NOT justified: it keeps its natural word spacing and simply ends where it
+   ends, rather than being stretched to the right edge. */
+.lede--wide .lede-b{display:flex;align-items:baseline}
+.lede--wide .lede-b-text{flex:0 1 auto}
+/* Words set in a script face against the serif around them — used both in the
+   statement above the photo and on single words in the bio beside it. Dancing
+   Script runs small for its point size, so it is stepped up to sit level with
+   its neighbours. Loaded only by about.html, the one page that uses it. */
+.script{font-family:'Dancing Script',cursive;font-weight:600;
+  font-size:1.18em;line-height:1}
+
+/* ---------- "who I work with" / "what I help with" panels ----------
+   Same shell and pill shape on both, scoped to just these two panels on the
+   Beyond the Uniform page rather than adopted into the site's navy/paper
+   palette — but different colour schemes, so the "who" panel reads lighter
+   than the "what" panel beneath it instead of the two blurring together. */
+.roles-panel,.issues-panel{position:relative;margin-top:clamp(2.5rem,5vw,3.5rem);
+  overflow:hidden;
+  padding:clamp(2rem,4vw,2.75rem) clamp(1.75rem,4vw,2.75rem)}
+.roles-panel::before,.issues-panel::before{content:'';position:absolute;top:0;
+  left:0;right:0;height:6px}
+.roles,.issues{display:flex;flex-wrap:wrap;gap:.65rem;list-style:none;padding:0;
+  margin:1.5rem 0 0}
+.roles li,.issues li{font-weight:600;border-radius:var(--pill);
+  padding:.6rem 1.25rem;font-size:.9375rem}
+
+.roles-panel{background:var(--navy-deep);border-radius:var(--card) var(--card) 0 0}
+.roles-panel::before{background:var(--brass-light)}
+.roles li{background:var(--brass);color:#fff}
+.roles-panel .roles{margin-top:0}
+
+/* The "Who I Work With" tag straddles the panel's own top edge rather than
+   sitting inside it: an outlined box, half above the panel (over the paper
+   band) and half over the sand panel itself. */
+.panel-tag{position:absolute;top:-1.85rem;left:clamp(1.75rem,4vw,2.75rem);
+  z-index:2;color:var(--navy);margin:0;font-size:1.0625rem;font-weight:700;
+  letter-spacing:.06em;border:3px solid var(--navy);border-radius:10px;
+  padding:.75rem 1.5rem;background:var(--paper)}
+
+.issues-panel{background:var(--navy-deep);margin-top:0;border-radius:0 0 var(--card) var(--card)}
+.issues-panel::before{background:var(--brass-light)}
+.issues li{background:#fff;color:var(--brass)}
+.issues-panel .issues{margin-top:0}
 
 /* ---------- photo gallery ----------
    Source photos are all portrait but at wildly different ratios (0.63, 0.42,
@@ -192,6 +413,115 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 .gallery figure{margin:0}
 .gallery img{width:100%;aspect-ratio:2/3;object-fit:cover;object-position:center 22%;
   border-radius:var(--card);box-shadow:0 6px 24px rgba(16,30,51,.13)}
+/* ---------- my lived experience ----------
+   Copy on the left at roughly two thirds, the standing portrait beside it on the
+   right at one third, and the fireground photo running the full width beneath
+   them at its own proportions so it is shown whole. */
+.le-cols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+  gap:clamp(2rem,5vw,4rem);align-items:stretch;margin-top:clamp(1.5rem,3vw,2.25rem)}
+@media (max-width:860px){.le-cols{grid-template-columns:1fr}}
+.le-portrait{margin:0}
+/* Stretched to the height of the text column beside it (paragraph plus the
+   pull-quote box), rather than a fixed aspect ratio, so its bottom edge lines
+   up with the bottom of that column instead of ending partway up it. */
+.le-portrait img{display:block;width:100%;height:100%;object-fit:cover;
+  object-position:center 18%;border-radius:var(--card);
+  box-shadow:0 6px 24px rgba(16,30,51,.13)}
+@media (max-width:860px){.le-portrait img{height:auto;aspect-ratio:2/3}}
+/* Set apart from the block above it, with more air above than a normal gap and
+   a heavy frame in turnout tan — sampled from the coat in the portrait beside
+   it (the most common mid-tone of the gear, #A28A66), so the photo is framed in
+   the colour of the thing it is about. */
+.le-wide{margin:clamp(2.75rem,5.5vw,4.25rem) 0 0}
+.le-wide img{display:block;width:100%;height:auto;border-radius:var(--card);
+  border:10px solid #A28A66;box-shadow:0 6px 24px rgba(16,30,51,.13)}
+.le-wide figcaption{font-family:var(--disp);font-style:italic;font-weight:500;
+  color:#fff;text-align:center;margin:2.5rem 0 0}
+.le-wide figcaption .quote-text{display:inline-block;
+  font-size:clamp(1.3125rem,2.4vw,1.6875rem);line-height:1.5;white-space:nowrap}
+.le-wide figcaption .quote-attr{display:inline-block;margin-top:.5rem;
+  font-size:clamp(1.125rem,2vw,1.4375rem);line-height:1.5;color:rgba(237,241,245,.78)}
+@media (max-width:700px){.le-wide figcaption{white-space:normal}}
+/* The three closing statements read as a callout rather than body copy: a
+   paper-toned tint lifts them off the section's linen background. Sized to
+   tuck into the text column beneath the paragraph above it, in the space
+   left over before the portrait beside it ends. */
+.pull-lines{margin-top:1.5rem;background:var(--paper);
+  border-radius:var(--card);padding:1.25rem 1.5rem 1rem;text-align:center}
+.pull-lines p{font-family:var(--disp);font-size:clamp(1.1875rem,2vw,1.375rem);
+  font-style:italic;font-weight:500;line-height:1.4;color:var(--navy);margin:0 0 .5rem}
+.pull-lines p:last-child{margin-bottom:0}
+.pull-lines strong{font-weight:700}
+/* Lupa's heading, set as a tilted navy tag with a brass paw. The rest of the
+   page is deliberately restrained, so the playfulness here is doing a job: it
+   marks this section as the warm aside it is, rather than another credential
+   block. The paw traces the proportions of img/Paw Print.png: large toes tilted
+   OUTWARD (tops leaning away from centre, which is what makes it read as a dog),
+   above a broad pad that peaks up between the two inner toes. Everything is
+   scaled to nearly fill the frame — a small paw floating in space read as a
+   generic icon rather than a print. */
+.lupa-tag{display:inline-flex;align-items:center;gap:.7rem;max-width:none;
+  margin-bottom:1.4rem;padding:.5rem 1.5rem .65rem 1.25rem;
+  font-size:clamp(1.75rem,3.6vw,2.6rem);color:#fff;background:var(--navy);
+  border-radius:var(--pill);box-shadow:0 10px 26px rgba(16,30,51,.20)}
+.lupa-tag .paw{flex:none;width:1.5em;height:1.5em;fill:var(--brass-light)}
+
+/* Lupa's section: copy on the left, her photo beside it on the right, the
+   same two-column shape as the lived-experience section above. */
+.lupa-cols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+  gap:clamp(2rem,5vw,4rem);align-items:start}
+@media (max-width:860px){.lupa-cols{grid-template-columns:1fr}}
+/* Lupa's frame. A single shot filling its column, rather than the base
+   .gallery's three-across grid: the 2/3 portrait above suits standing shots
+   of a person, while a dog is usually photographed wider, so this variant is
+   a squarer 4/5 centred rather than sitting high. */
+.gallery--lupa{grid-template-columns:1fr}
+.gallery--lupa img,.gallery--lupa .portrait{aspect-ratio:4/5}
+/* Bias the crop left: the source is nearly square in a 4:5 frame, so the sides
+   are trimmed — taking more off the right keeps the subject in frame. */
+.gallery--lupa img{object-position:25% center}
+.gallery--lupa .portrait{box-shadow:0 6px 24px rgba(16,30,51,.13)}
+
+/* ---------- who I work with: photo grid ----------
+   Seven frames on the homepage, one per group. Four across on a laptop so the
+   set reads as 4 + 3 rather than an awkward single trailing row; three, then
+   two, as the screen narrows. */
+.people{display:flex;flex-wrap:wrap;justify-content:center;
+  gap:clamp(.75rem,1.6vw,1.25rem);margin-top:clamp(2rem,4vw,3rem)}
+/* Flex rather than grid so a row that does not fill centres itself: nine frames
+   land as five and four, and the short row sits under the middle of the one
+   above instead of hanging off the left edge. */
+.person{margin:0;flex:0 1 calc(20% - 1rem)}
+@media (max-width:900px){.person{flex-basis:calc(33.333% - .84rem)}}
+@media (max-width:560px){.person{flex-basis:calc(50% - .625rem)}}
+.person-img{position:relative;aspect-ratio:3/4;border-radius:var(--card);
+  overflow:hidden;background:var(--navy-mid);box-shadow:0 1px 2px rgba(16,30,51,.07)}
+.person-img img{width:100%;height:100%;object-fit:cover}
+.person-img .ph{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.45rem;padding:1rem;text-align:center;
+  color:rgba(255,255,255,.5);font-size:.5625rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase}
+.person-img .ph span{font-family:var(--disp);font-size:1.125rem;font-weight:300;
+  letter-spacing:0;text-transform:none;color:rgba(255,255,255,.82);line-height:1.2}
+.person figcaption{margin-top:.7rem;text-align:center;font-size:.6875rem;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--slate)}
+.people-more{margin-top:clamp(2rem,4vw,3rem);text-align:center}
+
+/* Wrapper for the "future client" copy. position:relative is kept for now in
+   case an image or other element flanks the text again later. */
+.future-client{position:relative}
+/* The flag-heart image sits to the left of the copy, roughly a third of the
+   width, and stacks above the text on narrow screens. The "Beyond the
+   uniform" button sits beneath the image rather than centred under the whole
+   block, so it reads as paired with the image. */
+.fc-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);
+  gap:clamp(2rem,5vw,3.5rem);align-items:start}
+.fc-cols .prose{margin:0}
+.fc-left .people-more{margin-top:1.5rem}
+.fc-img{margin:0}
+.fc-img img{display:block;width:100%;height:auto}
+@media (max-width:760px){.fc-cols{grid-template-columns:1fr}
+  .fc-left{max-width:14rem;margin:0 auto}}
 
 /* ---------- portrait + credentials ---------- */
 .portrait{background:var(--navy-mid);aspect-ratio:4/5;position:relative;overflow:hidden;
@@ -203,9 +533,10 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 .portrait .ph span{font-family:var(--disp);font-size:1.5rem;letter-spacing:0;text-transform:none;
   font-weight:300;color:rgba(255,255,255,.8)}
 .cred{border-top:1px solid var(--rule);margin-top:2rem;padding-top:1.5rem;
-  font-size:.9375rem;color:var(--slate);line-height:1.8}
+  font-size:.9375rem;color:var(--slate);line-height:1.8;text-wrap:pretty}
 .cred b{color:var(--ink);font-weight:600;display:block;font-size:.6875rem;letter-spacing:.16em;
   text-transform:uppercase;margin-bottom:.5rem}
+.cred .nb{white-space:nowrap}
 
 /* ---------- session options ---------- */
 .sessions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;
@@ -220,7 +551,18 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 
 .modalities{list-style:none;padding:0;margin:2rem 0 0;columns:2;column-gap:2rem}
 .modalities li{font-size:1rem;color:var(--slate);padding:.45rem 0;break-inside:avoid}
+/* CSS columns balance by HEIGHT, not by item count: the two longest entries
+   wrap to two lines, so the browser was fitting only three items in the first
+   column. .col-end forces the break after a chosen item so the split is where
+   it was asked for. Move the class if the list is reordered. */
+.modalities li.col-end{break-after:column;-webkit-column-break-after:column}
 @media (max-width:560px){.modalities{columns:1}}
+/* Gold frame, white fill — the shell shared with .fcard and .note on the fees
+   page, without their type treatment so it can wrap any block of content. */
+.boxed{border:2px solid var(--brass-light);border-radius:var(--card);background:#fff;
+  padding:1.6rem 1.75rem;margin-top:1.5rem;color:var(--navy)}
+.boxed > :first-child{margin-top:0}
+.boxed .modalities{margin-top:1.25rem}
 
 /* ---------- confidentiality ledger ---------- */
 .ledger{list-style:none;padding:0;margin:0}
@@ -246,26 +588,33 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 /* ---------- fees: rate cards ---------- */
 .fcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
   gap:clamp(1.25rem,2.6vw,1.75rem);margin-top:2.75rem}
-.fcard{background:var(--paper);border:1px solid var(--rule);border-radius:var(--card);
+/* Same shell as .note below: gold frame, white fill, navy text. */
+.fcard{background:#fff;border:2px solid var(--brass-light);border-radius:var(--card);
   padding:1.15rem 1.15rem 2rem;text-align:center;display:flex;flex-direction:column;
   box-shadow:0 1px 2px rgba(16,30,51,.05)}
 .fcard-img{aspect-ratio:16/10;border-radius:calc(var(--card) - 9px);overflow:hidden;
   background:var(--sand);margin-bottom:1.6rem}
 .fcard-img img{width:100%;height:100%;object-fit:cover}
-.fcard h3{font-family:var(--disp);font-style:italic;font-size:1.75rem;font-weight:500;
+.fcard h3{font-family:var(--disp);font-style:italic;font-size:1.75rem;font-weight:700;
   color:var(--navy);margin:0 0 .45rem;padding:0 .5rem}
 .fcard .meta{font-size:.9375rem;color:var(--slate);margin:0 0 1.35rem;padding:0 .5rem}
 .fcard .price{font-family:var(--disp);font-size:2.25rem;font-weight:300;color:var(--ink);
   line-height:1;margin:0;font-variant-numeric:tabular-nums}
 .fcard .price small{display:block;font-family:var(--body);font-size:.6875rem;font-weight:600;
   letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin-top:.6rem}
-.fcard .breakdown{list-style:none;padding:0;margin:1.4rem 0 1.9rem;font-size:.875rem;
-  color:var(--slate);border-top:1px solid var(--rule)}
-.fcard .breakdown li{display:flex;justify-content:space-between;gap:1rem;padding:.55rem .35rem;
-  border-bottom:1px solid var(--rule);font-variant-numeric:tabular-nums}
-.fcard .breakdown li span:first-child{color:var(--stone)}
+/* The rate rows carry the pricing on their own (there is no .price block above
+   them), so both the label and the amount are set in the display face at the
+   same size rather than reading as fine print. */
+.fcard .breakdown{list-style:none;padding:0;margin:1.4rem 0 1.9rem;
+  border-top:1px solid var(--rule)}
+.fcard .breakdown li{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding:.85rem .35rem;border-bottom:1px solid var(--rule);font-variant-numeric:tabular-nums;
+  font-family:var(--disp);font-size:1.625rem;font-weight:400;line-height:1;color:var(--navy)}
+.fcard .breakdown li span:first-child{text-align:left}
 .fcard .btn{margin-top:auto;align-self:center}
-.fnote{margin-top:1.5rem;font-size:.8125rem;font-weight:600;letter-spacing:.14em;
+/* Extra space above sets it apart from the cards rather than reading as a
+   caption hanging off them. */
+.fnote{margin-top:2.75rem;font-size:.8125rem;font-weight:600;letter-spacing:.14em;
   text-transform:uppercase;color:var(--stone);text-align:center}
 
 /* ---------- fees: table (retained for reference) ---------- */
@@ -286,9 +635,29 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 .paylist b{font-size:.625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
 .paylist span{font-size:1rem;color:var(--slate);line-height:1.6}
 @media (max-width:560px){.paylist li{grid-template-columns:1fr;gap:.35rem}}
-.note{border-left:2px solid var(--brass);padding-left:1.35rem;margin-top:2.5rem;
-  font-size:1rem;color:var(--slate);max-width:56ch}
+/* Gold-framed white card. Set in the display serif, larger, so it reads as
+   commentary beside the body-serif list rather than more of the same. Cormorant
+   has a small x-height, so it needs the size bump to sit level with 1rem body
+   text. Navy on white is 13.9:1 — the reason the fill is white and not gold:
+   white text on any usable gold lands near 2:1 and fails. The title sits in
+   its own gold band — the same gold as the card's outline — divided from the
+   body by a rule in the deeper brass. */
+.note{border:2px solid var(--brass-light);border-radius:var(--card);background:var(--paper);
+  overflow:hidden;margin-top:2.5rem}
 .rv > .note:first-child{margin-top:0}
+.note-title{margin:0;color:var(--brass);
+  font-family:var(--disp);font-weight:600;font-size:1.0625rem;text-align:center;
+  padding:.6rem 1.25rem;border-bottom:1px solid var(--rule)}
+.note-title a{color:inherit;text-decoration:none}
+.note-title a:hover,.note-title a:focus-visible{color:var(--navy);font-weight:700}
+.note-body{margin:0;padding:1.15rem 1.35rem;text-align:center;
+  font-family:var(--disp);font-size:1.0625rem;line-height:1.5;color:var(--slate)}
+/* Drop the card so its top edge lands on the .paylist's first horizontal rule
+   beside it — the same 2.5rem the list uses as its own top margin. Side-by-side
+   only; stacked, there is no list to line up with and the grid gap spaces it. */
+@media (min-width:861px){
+  .rv--rule{margin-top:2.5rem}
+}
 .note strong{color:var(--ink);font-weight:600}
 
 /* ---------- steps ---------- */
@@ -312,7 +681,9 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 .faq .a{padding:0 0 1.5rem;color:var(--slate);max-width:62ch}
 
 /* ---------- book a consult ---------- */
-.consult{padding-top:clamp(4rem,9vw,7rem)}
+/* Matches .band--tight-top: this page has no hero, so the form starts the same
+   distance below the nav as every other page's first section does. */
+.consult{padding-top:clamp(1.625rem,3.5vw,3rem)}
 .consult .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   gap:clamp(2.5rem,7vw,6rem);align-items:start}
 @media (max-width:900px){.consult .wrap{grid-template-columns:1fr;gap:3rem}}
@@ -420,8 +791,63 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 .foot-legal{padding-top:2rem;font-size:.8125rem;line-height:1.9;color:rgba(255,255,255,.5)}
 .foot-legal b{color:rgba(255,255,255,.8);font-weight:600}
 
+/* Footer badges. Scoped as .foot .foot-badge so the rules outrank `.foot a`.
+   The shell is element-agnostic: the Psychology Today seal is an <a>, the
+   Veteran Owned badge is a <span>, and both wear it. */
+.foot-badges{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:.25rem}
+.foot .foot-badge{display:inline-flex;flex-direction:column;gap:.1rem;
+  padding:.65rem .95rem;border-radius:var(--card);border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.04);transition:border-color .2s,background .2s}
+.foot .foot-badge:hover,.foot .foot-badge:focus-visible{border-color:rgba(255,255,255,.45);
+  background:rgba(255,255,255,.08)}
+/* Image badge (the Psychology Today seal): the artwork carries its own frame
+   and colour, so drop the typographic badge's border, padding and fill.
+   Height is matched to the text badge beside it; width follows the aspect. */
+.foot .foot-badge--img{padding:0;border:0;background:none;align-items:center;
+  justify-content:center;border-radius:10px;transition:opacity .2s}
+.foot .foot-badge--img img{display:block;width:auto;height:56px}
+.foot .foot-badge--img:hover,.foot .foot-badge--img:focus-visible{background:none;
+  border-color:transparent;opacity:.85}
+.foot .foot-badge--img:focus-visible{outline:2px solid var(--brass-light);outline-offset:3px}
+
+/* Self-contained seal (the Veteran Owned badge): like the Psychology Today
+   badge, the artwork carries its own frame and colour, so the chip's border,
+   padding and fill come off. Height is matched to the seal beside it; the
+   badge is taller in proportion, so it simply ends up narrower. */
+.foot .foot-badge--seal{padding:0;border:0;background:none;border-radius:4px;
+  overflow:hidden;cursor:default}
+.foot .foot-badge--seal:hover{background:none;border-color:transparent}
+.foot .foot-badge--seal .seal{display:block;height:56px;width:auto}
+
+@media (prefers-reduced-motion:reduce){.foot .foot-badge{transition:none}}
+
+/* A plain, non-clickable email badge — navy box, white text. Not a link:
+   there is nowhere for it to go, it is here for easy reference. */
+.faq-email{display:inline-block;color:#fff;background:var(--navy);
+  padding:.75rem 1.25rem;border-radius:var(--card);font-weight:600;
+  letter-spacing:.02em}
+
 /* ---------- doc pages ---------- */
 .doc{max-width:44rem}
+/* Professional Disclosure Statement only. Links here signal themselves with
+   bold weight instead of the browser's default underline. */
+.doc--no-underline a{text-decoration:none;font-weight:600}
+/* Notice of Privacy Practices only. The reading column normally centers itself
+   independently of the nav's 1160px wrap, so its left AND right edges sit
+   further in than the nav content on wide screens. This keeps the column's
+   current left edge exactly where it already falls, but stretches the right
+   edge out to meet the nav wrap's right edge (where the Book a Consultation
+   button ends) — so width becomes a fixed span between those two edges rather
+   than the usual centered 44rem box.
+
+   Guarded to exactly --wrap's width (1160px): below that the wrap itself is no
+   longer pinned to viewport-centre (it just fills the screen) and --pad is
+   still shrinking, so the fixed-width math below stops matching it — the page
+   falls back to the normal centered 44rem column there instead. */
+@media (min-width:1160px){
+  .doc.doc--full-right{max-width:none;width:calc((var(--wrap) + 44rem) / 2);
+    margin-left:calc((100% - 44rem) / 2);margin-right:0}
+}
 .doc h2{font-size:1.75rem;margin:2.5rem 0 .9rem;color:var(--navy)}
 .doc h2:first-child{margin-top:0}
 .doc p,.doc li{color:var(--slate)}
@@ -464,11 +890,26 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 /* Confirmation panel — takes the form's place in the layout. */
 .cform-done{outline:none;max-width:38rem}
 .cform-done:focus-visible{outline:2px solid var(--brass);outline-offset:8px}
-.cform-done-mark{display:inline-flex;align-items:center;justify-content:center;
-  width:2.75rem;height:2.75rem;border-radius:50%;background:rgba(63,143,94,.12);
-  color:#2E6B45;margin-bottom:1.75rem}
+/* Navy frame around the message. The top-left corner is left square rather
+   than rounded, and a paper-coloured patch erases the border right at that
+   corner, so the frame reads as open there — the checkmark sits in the gap,
+   breaking out of the box instead of being boxed in with the text. */
+.cform-done-box{position:relative;border:4.75px solid var(--navy);
+  border-radius:0 var(--card) var(--card) var(--card);
+  padding:2.75rem 2rem 1.75rem}
+.cform-done-box::before{content:'';position:absolute;top:-2.5rem;left:-2.5rem;
+  width:5rem;height:5rem;background:var(--paper)}
+/* The tick's tail runs outside its ring, so the mark carries no background disc
+   of its own — a tinted circle behind it would clip the sweep. */
+.cform-done-mark{position:absolute;top:-1.625rem;left:-1.625rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:3.25rem;height:3.25rem;margin-bottom:1.75rem}
+.cform-done-mark svg{width:100%;height:100%;display:block}
+/* No measure on the heading: the 18ch cap was sized for the old two-line message
+   and would break a short one like "Thanks for reaching out!" across two lines.
+   It now runs to the same width as the paragraphs beneath it. */
 .cform-done h2{font-size:clamp(1.75rem,3.4vw,2.5rem);font-weight:300;line-height:1.14;
-  color:var(--navy);margin:0 0 1.5rem;max-width:18ch}
+  color:var(--navy);margin:0 0 1.5rem;max-width:none}
 .cform-done h2 em{font-style:italic}
 .cform-done p{font-size:1.0625rem;line-height:1.7;color:var(--slate);margin:0 0 1.25rem;
   max-width:44ch}
@@ -480,6 +921,89 @@ h2.head{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:300;max-width:22ch;line-h
 [hidden]{display:none!important}
 
 /* ---------- AI-free badge in footer ---------- */
-.ai-badge{margin-top:1.25rem;text-align:right}
-.ai-badge img{max-width:160px;height:auto;display:inline-block;filter:none;opacity:.95}
-@media (max-width:640px){.ai-badge{text-align:center}}
+
+/* ---------- survey-style forms (speaking requests) ----------
+   Extends the consult form's .cform grid rather than replacing it: same field
+   and button styling, plus the question / choice / scale blocks a survey needs.
+   Every control is a real <input> — the tiles and rows are painted labels, so
+   keyboard and screen-reader behaviour stays native. */
+.survey-wrap{max-width:44rem;margin-top:3rem}
+.survey{gap:2.5rem}
+.survey .q{border:0;padding:0;margin:0;min-width:0}
+.q-title{font-family:var(--disp);font-size:1.375rem;font-weight:500;color:var(--navy);
+  padding:0;margin:0 0 1.1rem;line-height:1.25}
+.field.q > label{margin-bottom:.9rem}
+.q-help{font-size:.9375rem;color:var(--stone);margin:-.6rem 0 1rem;line-height:1.5}
+
+.opts{display:grid;gap:.55rem}
+.opt-row{display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;
+  padding:.7rem .95rem;border:1px solid var(--rule);border-radius:12px;background:#fff;
+  font-size:1rem;line-height:1.5;color:var(--slate);
+  transition:border-color .2s,background .2s,color .2s}
+.opt-row:hover{border-color:var(--brass-light);background:var(--sand)}
+.opt-row input{accent-color:var(--navy);margin:.28rem 0 0;flex:none}
+.opt-row:has(input:checked){border-color:var(--brass);background:var(--sand);color:var(--ink)}
+.opt-row:focus-within{outline:2px solid var(--brass-light);outline-offset:2px}
+
+/* 1-5 scale. The radio is taken out of the paint but left in the DOM and in
+   the tab order — the number tile is its label, not a replacement for it. */
+.scale{display:flex;gap:.5rem;flex-wrap:wrap}
+.scale-item{flex:1 1 3rem;cursor:pointer;position:relative}
+.scale-item input{position:absolute;opacity:0;width:0;height:0}
+.scale-item span{display:block;text-align:center;padding:.85rem .5rem;border-radius:12px;
+  border:1px solid var(--rule);background:#fff;font-size:1.0625rem;color:var(--slate);
+  transition:border-color .2s,background .2s,color .2s}
+.scale-item:hover span{border-color:var(--brass-light);background:var(--sand)}
+.scale-item input:checked + span{background:var(--navy);border-color:var(--navy);color:#fff}
+.scale-item input:focus-visible + span{outline:2px solid var(--brass);outline-offset:2px}
+.scale-ends{display:flex;justify-content:space-between;gap:1rem;margin-top:.6rem;
+  font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--stone)}
+
+.field textarea{font-family:var(--body);font-size:1.0625rem;line-height:1.6;color:var(--ink);
+  background:#fff;border:1px solid var(--rule);border-radius:12px;padding:.85rem 1rem;
+  resize:vertical;min-height:6rem;transition:border-color .2s}
+.field textarea::placeholder{color:var(--stone);opacity:1}
+.field textarea:hover{border-color:var(--stone)}
+.field textarea:focus{border-color:var(--brass);outline:none}
+
+.reply-fields{display:grid;gap:1.75rem;padding-left:1.25rem;
+  border-left:2px solid var(--brass-light)}
+@media (prefers-reduced-motion:reduce){
+  .opt-row,.scale-item span,.field textarea{transition:none}
+}
+
+/* ---------- FAQ ----------
+   Reuses the .cs disclosure from the crisis panel, restyled: the crisis version
+   is a single uppercase pill on a dark band, which reads badly as a stack of
+   seven sentence-case questions on paper. */
+.faq-list{max-width:48rem;margin-top:2.5rem}
+.faq-list .cs{margin-top:0;border-bottom:1px solid var(--rule)}
+.faq-list .cs summary{display:flex;justify-content:space-between;align-items:baseline;
+  gap:1.5rem;width:100%;font-family:var(--disp);font-size:1.4375rem;font-weight:600;
+  letter-spacing:0;text-transform:none;padding:1.15rem 0;background:none;
+  box-shadow:none;border:0;border-radius:0;color:var(--navy-deep)}
+.faq-list .cs summary:hover,.faq-list .cs summary:focus-visible{background:none;
+  box-shadow:none;color:var(--brass)}
+/* The +/- marker gets its own brass disc so the eye has something to aim at
+   down the left-to-right sweep of question text. */
+.faq-list .cs summary::after{margin-left:0;flex:none;align-self:center;
+  width:1.6rem;height:1.6rem;line-height:1.5rem;text-align:center;font-size:1.05rem;
+  color:var(--brass);border:1px solid rgba(126,98,54,.35);border-radius:50%;
+  transition:background .2s,border-color .2s}
+.faq-list .cs summary:hover::after,.faq-list .cs summary:focus-visible::after{
+  background:var(--sand);border-color:var(--brass)}
+.faq-list .cs[open] summary{color:var(--brass)}
+.faq-list .cs-panel{margin-top:0;margin-bottom:1.5rem}
+/* The crisis panel this component came from only ever held one paragraph, so
+   `.cs-panel > p` zeroes the margin. FAQ answers run to two or three. */
+.faq-list .cs-panel > p{color:var(--slate)}
+.faq-list .cs-panel > p + p{margin-top:1rem}
+.faq-list .cs-panel a{color:var(--navy);text-decoration:none;
+  border-bottom:1px solid rgba(126,98,54,.45)}
+.faq-list .cs-panel a:hover,.faq-list .cs-panel a:focus-visible{border-bottom-color:var(--brass)}
+/* A link with no rule beneath it. Without the underline the colour has to do
+   all the signalling, so it shifts from body navy to the brass accent. */
+.faq-list .cs-panel a.a-plain{border-bottom:0;color:var(--brass);font-weight:600}
+.faq-list .cs-panel a.a-plain:hover,
+.faq-list .cs-panel a.a-plain:focus-visible{color:var(--navy)}

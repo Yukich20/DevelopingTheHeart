@@ -26,12 +26,13 @@
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav">
   <div class="wrap nav-in">
-    <a class="brand" href="index.html"><b>Developing The Heart</b><small>Counseling &amp; Consulting</small></a>
+    <a class="brand" href="index.html"><b>Developing The Heart</b><small>Counseling &amp; Consulting LLC</small></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="menu">Menu</button>
     <nav class="nav-links" id="menu" aria-label="Main">
       <a href="about.html">About</a>
       <a href="beyond-the-uniform.html">Beyond the Uniform</a>
       <a href="fees.html">Fees &amp; Payment</a>
+      <a href="faq.html">FAQs</a>
       <a class="cta" href="contact.html" aria-current="page">Book a Consultation</a>
     </nav>
   </div>
@@ -43,7 +44,7 @@
 
     <div class="rv">
       <h1>When you're ready, <em>let's talk.</em></h1>
-      <p class="consult-lede">I personally review every inquiry and will be in touch shortly. The first step is a brief consultation. This is a chance for us to connect, have your questions answered, and see whether working together feels like the right fit.</p>
+      <p class="consult-lede">I personally review every inquiry and will be in touch shortly. The first step is a 30-minute consultation. This is a chance for us to connect, have your questions answered, and see whether working together feels like the right fit.</p>
       <hr class="consult-rule">
       <p class="consult-fine">I am a private pay therapist and do not accept insurance. If you have out-of-network benefits, I can provide a superbill upon request for you to submit to your insurance company for possible reimbursement.</p>
     </div>
@@ -77,7 +78,6 @@
             <option value="Individual therapy">Individual therapy</option>
             <option value="Couples therapy">Couples therapy</option>
             <option value="Family therapy">Family therapy</option>
-            <option value="Not sure - would like to discuss">Not sure &mdash; would like to discuss</option>
           </select>
         </div>
 
@@ -101,16 +101,28 @@
       </form>
 
       <div class="cform-done" id="consult-done" role="status" tabindex="-1" hidden>
-        <span class="cform-done-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="20" height="20" focusable="false"><path d="M4 12.5l5.2 5.2L20 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </span>
-        <h2>Thank you &mdash; <em>your note is on its way.</em></h2>
-        <p>I've received your inquiry and will be in touch within two business days to find a time for your consultation. If you don't hear from me, please check your spam folder before assuming it didn't arrive.</p>
+        <div class="cform-done-box">
+          <span class="cform-done-mark" aria-hidden="true">
+            <!-- Traces img/Check Mark.png: an open ring with the tick's tail sweeping
+                 up through the gap. Ring in the site navy, tick in the green used by
+                 the "currently accepting new clients" dot. -->
+            <svg viewBox="0 0 48 48" focusable="false">
+              <path d="M42.6 20.1A19 19 0 1 1 29.9 5.9" fill="none" stroke="#1D2E49"
+                    stroke-width="4.4" stroke-linecap="round"/>
+              <path d="M13.5 24.8 22 34.2 40.5 7.4" fill="none" stroke="#3F8F5E"
+                    stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h2>Thanks for reaching out!</h2>
+          <p>I have received your inquiry and will get back to you shortly.</p>
+          <p>If you are experiencing an emergency or need immediate support &mdash; please call 911 or 988,<br>or visit your nearest emergency department.</p>
+        </div>
       </div>
 
       <div class="cform-foot">
         connect@<wbr>developingtheheart.com<br>
-        Oregon<span class="sep"></span>Telehealth only
+        Oregon<span class="sep"></span>Telehealth only<br>
+        Tuesday&ndash;Saturday<span class="sep"></span>Night sessions available on Tuesday 8pm&ndash;8am
       </div>
     </div>
 
@@ -123,30 +135,85 @@
     <div class="foot-top">
       <div>
         <p class="foot-brand">Developing The Heart<br>Counseling &amp; Consulting LLC</p>
-        <p style="color:rgba(255,255,255,.65);line-height:1.6;margin:0">Therapy for first responders, veterans,<br>high-stress professionals, and their families (age 14+).<br>Serving clients physically located in Oregon.<br>Telehealth only.</p>
+        <div class="foot-badges">
+          <a class="foot-badge foot-badge--img" href="https://www.psychologytoday.com/profile/1833487"
+             target="_blank" rel="noopener">
+            <img src="img/Psychology%20Today%20Website%20Badge.webp"
+                 alt="Verified by Psychology Today" width="1744" height="520"
+                 loading="lazy" decoding="async">
+          </a>
+          <!-- Not a link: this badge states a fact about the practice. Drawn as
+               inline SVG rather than using img/Veteran Owned Badge.png so it stays
+               sharp at any density, carries no download weight, and has no stray
+               background around its edges on the navy footer. -->
+          <span class="foot-badge foot-badge--seal">
+            <svg class="seal" viewBox="0 0 192 112" focusable="false" role="img" aria-label="Veteran owned business">
+              <defs><path id="vst" d="M0-1 .2245-.309.9511-.309.3633.118.5878.809 0 .382-.5878.809-.3633.118-.9511-.309-.2245-.309Z"/></defs>
+              <rect width="192" height="112" rx="3" fill="#C9AE83"/>
+              <rect x="7" y="7" width="178" height="98" fill="#fff"/>
+              <rect x="86" y="14.00" width="86" height="7" fill="#B22234"/>
+              <rect x="86" y="24.33" width="86" height="7" fill="#B22234"/>
+              <rect x="86" y="34.66" width="86" height="7" fill="#B22234"/>
+              <rect x="86" y="44.99" width="86" height="7" fill="#B22234"/>
+              <rect x="20" y="14" width="66" height="38" fill="#26356F"/>
+              <g fill="#fff">
+                <use href="#vst" transform="translate(25.5 17.0) scale(2.6)"/>
+                <use href="#vst" transform="translate(38.8 17.0) scale(2.6)"/>
+                <use href="#vst" transform="translate(52.0 17.0) scale(2.6)"/>
+                <use href="#vst" transform="translate(65.2 17.0) scale(2.6)"/>
+                <use href="#vst" transform="translate(78.5 17.0) scale(2.6)"/>
+                <use href="#vst" transform="translate(32.1 23.6) scale(2.6)"/>
+                <use href="#vst" transform="translate(45.4 23.6) scale(2.6)"/>
+                <use href="#vst" transform="translate(58.6 23.6) scale(2.6)"/>
+                <use href="#vst" transform="translate(71.9 23.6) scale(2.6)"/>
+                <use href="#vst" transform="translate(25.5 30.2) scale(2.6)"/>
+                <use href="#vst" transform="translate(38.8 30.2) scale(2.6)"/>
+                <use href="#vst" transform="translate(52.0 30.2) scale(2.6)"/>
+                <use href="#vst" transform="translate(65.2 30.2) scale(2.6)"/>
+                <use href="#vst" transform="translate(78.5 30.2) scale(2.6)"/>
+                <use href="#vst" transform="translate(32.1 36.8) scale(2.6)"/>
+                <use href="#vst" transform="translate(45.4 36.8) scale(2.6)"/>
+                <use href="#vst" transform="translate(58.6 36.8) scale(2.6)"/>
+                <use href="#vst" transform="translate(71.9 36.8) scale(2.6)"/>
+                <use href="#vst" transform="translate(25.5 43.4) scale(2.6)"/>
+                <use href="#vst" transform="translate(38.8 43.4) scale(2.6)"/>
+                <use href="#vst" transform="translate(52.0 43.4) scale(2.6)"/>
+                <use href="#vst" transform="translate(65.2 43.4) scale(2.6)"/>
+                <use href="#vst" transform="translate(78.5 43.4) scale(2.6)"/>
+              </g>
+              <text x="96" y="79" text-anchor="middle" textLength="150" lengthAdjust="spacingAndGlyphs"
+                    font-family="'Arial Narrow',Impact,'Helvetica Neue',Arial,sans-serif"
+                    font-weight="800" font-size="30" fill="#B22234">VETERAN</text>
+              <text x="96" y="98" text-anchor="middle" textLength="150" lengthAdjust="spacingAndGlyphs"
+                    font-family="'Arial Narrow',Impact,'Helvetica Neue',Arial,sans-serif"
+                    font-weight="800" font-size="17" fill="#B22234">OWNED BUSINESS</text>
+            </svg>
+          </span>
+        </div>
       </div>
       <div>
         <h4>Practice</h4>
-        <a href="about.html">About</a>
         <a href="beyond-the-uniform.html">Beyond the Uniform</a>
         <a href="fees.html">Fees &amp; Payment</a>
-        <a href="telehealth.html">Telehealth</a>
-        <a href="contact.html">Contact</a>
+        <a href="faq.html">FAQs</a>
+        <a href="contact.html" aria-current="page">Book a Consultation</a>
       </div>
       <div>
         <h4>Documents</h4>
-        <a href="docs/professional-disclosure-statement.pdf">Professional Disclosure Statement</a>
+        <a href="professional-disclosure-statement.html">Professional Disclosure Statement</a>
         <a href="notice-of-privacy-practices.html">Notice of Privacy Practices</a>
         <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="fees.html#gfe">Good Faith Estimate</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="good-faith-estimate.html">Good Faith Estimate</a>
       </div>
     </div>
     <div class="foot-legal">
-      <b>Ashley Yukich, MA &mdash; Marriage and Family Therapist Associate</b><br>
-      Registered with the Oregon Board of Licensed Professional Counselors and Therapists &middot; Registration #{{REG_NUMBER}}<br>
-      Supervised by <b>Justin Rock, LMFT/LPC</b> &mdash; LMFT #T2584, LPC #C4650<br>
+      <b>Ashley Yukich &mdash; Marriage &amp; Family Therapist Associate</b><br>
+      Registered with the Oregon Board of Licensed Professional Counselors and Therapists<br>
+      Supervisor: Justin Rock, LMFT, LPC<br>
       &copy; 2026 Developing The Heart Counseling &amp; Consulting LLC
     </div>
+
   </div>
 </footer>
 <script src="js/main.js" defer></script>

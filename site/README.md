@@ -48,8 +48,10 @@ In VS Code: Ctrl+Shift+H, enter the token, enter the value, "Replace All".
 - [ ] Portrait photo → `img/portrait.jpg`, then replace the `.portrait .ph`
       placeholder div in `about.html` with `<img src="/img/portrait.jpg" alt="...">`
 - [ ] Social share image → `img/og-image.jpg` (1200×630)
-- [ ] Professional Disclosure Statement → `docs/professional-disclosure-statement.pdf`
-      (currently linked in the footer but the file does not exist yet)
+- [ ] Professional Disclosure Statement → write the content into
+      `professional-disclosure-statement.html`. It is now a page on the site
+      rather than a PDF download; the footer links to it from every page and the
+      section headings are already in place, awaiting the text.
 - [ ] Finish the About paragraphs (marked `[Placeholder]`)
 - [ ] Add referral partners on `about.html`
 - [ ] Complete `privacy-policy.html` and `notice-of-privacy-practices.html`
