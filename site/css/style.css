@@ -219,6 +219,14 @@ ul,ol{margin:0}
 /* Second line of a two-part headline: set smaller so a long supporting clause
    fits on one line at the width the band actually has. */
 .hero h1 .h1-sub{display:block;font-size:.56em;line-height:1.15;margin-top:.4em}
+/* On mobile, pull the attribution right up under the quote instead of
+   leaving the usual .4em gap. */
+@media (max-width:860px){.hero h1 .h1-sub--tight{margin-top:0}}
+/* Below ~460px this clause (55 characters) wraps to two lines at its normal
+   size. Scale it down just enough to hold one line at any narrower width -
+   the formula is fit to this exact string's measured width, not a generic
+   rule, so it stays paired with this one headline. */
+@media (max-width:459px){.hero h1 .h1-sub--fit{font-size:calc(4.72vw - 1.9px);white-space:nowrap}}
 /* On mobile, drop the break after "isn't here -" so "reach out," flows
    with it and wraps naturally instead of being forced onto its own line;
    keep the break before "ask me directly." so that phrase still starts
@@ -383,6 +391,11 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
    is NOT justified: it keeps its natural word spacing and simply ends where it
    ends, rather than being stretched to the right edge. */
 .lede--wide .lede-b{display:flex;align-items:baseline}
+/* On mobile the sentence wraps across several lines, and keeping it a flex
+   row left the heart stranded beside the wrap rather than after the last
+   word. Drop back to plain inline flow so the heart sits right after
+   "heart." wherever that lands. */
+@media (max-width:860px){.lede--wide .lede-b{display:block}}
 .lede--wide .lede-b-text{flex:0 1 auto}
 /* Words set in a script face against the serif around them — used both in the
    statement above the photo and on single words in the bio beside it. Dancing
@@ -487,6 +500,9 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
   font-style:italic;font-weight:500;line-height:1.4;color:var(--navy);margin:0 0 .5rem}
 .pull-lines p:last-child{margin-bottom:0}
 .pull-lines strong{font-weight:700}
+/* On mobile, run the two lines together as one flowing paragraph instead of
+   two separate blocks with a gap between them. */
+@media (max-width:860px){.pull-lines p{display:inline}}
 /* Lupa's heading, set as a tilted navy tag with a brass paw. The rest of the
    page is deliberately restrained, so the playfulness here is doing a job: it
    marks this section as the warm aside it is, rather than another credential
@@ -556,7 +572,8 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
 .fc-img{margin:0}
 .fc-img img{display:block;width:100%;height:auto}
 @media (max-width:760px){.fc-cols{grid-template-columns:1fr}
-  .fc-left{max-width:14rem;margin:0 auto}}
+  .fc-left{max-width:14rem;margin:0 auto}
+  .fc-cols .prose{text-align:center}}
 
 /* ---------- portrait + credentials ---------- */
 .portrait{background:var(--navy-mid);aspect-ratio:4/5;position:relative;overflow:hidden;
