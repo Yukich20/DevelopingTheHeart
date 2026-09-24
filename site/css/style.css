@@ -219,9 +219,12 @@ ul,ol{margin:0}
 /* Second line of a two-part headline: set smaller so a long supporting clause
    fits on one line at the width the band actually has. */
 .hero h1 .h1-sub{display:block;font-size:.56em;line-height:1.15;margin-top:.4em}
-/* On mobile, break the FAQ headline after "reach out," so "ask me
-   directly." lands on its own line below. */
+/* On mobile, drop the break after "isn't here -" so "reach out," flows
+   with it and wraps naturally instead of being forced onto its own line;
+   keep the break before "ask me directly." so that phrase still starts
+   its own line below. */
 @media (min-width:861px){.faq-h1-br{display:none}}
+@media (max-width:860px){.faq-h1-br-desktop{display:none}}
 /* Tan rather than white so the headline above — the one line meant to stand
    out — is the only white text in the hero. */
 .hero-sub{font-size:clamp(1.0625rem,1.8vw,1.25rem);color:var(--brass-light);
