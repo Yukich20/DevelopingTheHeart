@@ -585,10 +585,8 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
   letter-spacing:.18em;text-transform:uppercase;text-align:center;padding:2rem}
 .portrait .ph span{font-family:var(--disp);font-size:1.5rem;letter-spacing:0;text-transform:none;
   font-weight:300;color:rgba(255,255,255,.8)}
-/* Gold, matching "How I work" below - the "Credentials" label itself stays
-   ink, since .cred b's own color rule is more specific and wins. */
 .cred{border-top:1px solid var(--rule);margin-top:2rem;padding-top:1.5rem;
-  font-size:.9375rem;color:var(--brass);line-height:1.8;text-wrap:pretty}
+  font-size:.9375rem;color:var(--slate);line-height:1.8;text-wrap:pretty}
 .cred b{color:var(--ink);font-weight:600;display:block;font-size:.6875rem;letter-spacing:.16em;
   text-transform:uppercase;margin-bottom:.5rem}
 .cred .nb{white-space:nowrap}
@@ -600,6 +598,11 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
 @media (max-width:480px){
   .cred{font-size:min(.9375rem, calc((100vw - 2.5rem) * 0.0375))}
 }
+/* On mobile only, set the credential lines in the same gold as "How I work"
+   below - desktop keeps the slate used everywhere else in this column. The
+   "Credentials" label itself stays ink on both, since .cred b's own color
+   rule is more specific and wins. */
+@media (max-width:860px){.cred{color:var(--brass)}}
 /* ---------- session options ---------- */
 .sessions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;
   background:var(--rule);margin-top:2.5rem;border:1px solid var(--rule);
@@ -821,6 +824,12 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
    just enough to fit - fit to this exact string's measured width, not a
    generic rule, so it stays paired with this one line. */
 @media (max-width:413px){.cform-hours{font-size:calc(4vw - 1.9px);white-space:nowrap}}
+/* The visible gap above "connect@..." (35px: padding-top plus that line's
+   own leading) was noticeably smaller than the gap below "Overnight
+   hours..." (50.5px at the standard 2.75rem divider margin), because the
+   last line's own leading adds extra space beneath the text that a matching
+   margin doesn't account for. 28.5px measured out to the matching 35px. */
+.cform-foot-rule{margin-top:28.5px}
 
 /* ---------- contact ---------- */
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2.5rem;
