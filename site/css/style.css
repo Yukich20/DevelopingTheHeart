@@ -776,11 +776,12 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
 .cform-foot a:hover,.cform-foot a:focus-visible{border-bottom-color:var(--brass)}
 .cform-foot .sep{display:inline-block;width:2px;height:.9em;margin:0 .6rem;
   background:var(--rule);vertical-align:-.08em}
-/* On mobile, break the line after "Tuesday-Saturday" so "Night sessions
-   available on Tuesday 8pm-8am" runs as its own line below, instead of
-   the two staying joined by the separator dot. */
-@media (min-width:861px){.cform-br{display:none}}
-@media (max-width:860px){.cform-sep-mobile{display:none}}
+/* On mobile, join "Telehealth only" and "Tuesday-Saturday" onto one line
+   (dropping the break that separates them on wider screens, adding a dot
+   in its place), then break before "Night sessions available on Tuesday
+   8pm-8am" so it runs as its own line below. */
+@media (min-width:861px){.cform-mobile-only{display:none}}
+@media (max-width:860px){.cform-desktop-only{display:none}}
 
 /* ---------- contact ---------- */
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2.5rem;
