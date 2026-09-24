@@ -692,6 +692,10 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
 .note-title a:hover,.note-title a:focus-visible{color:var(--navy);font-weight:700}
 .note-body{margin:0;padding:1.15rem 1.35rem;text-align:center;
   font-family:var(--disp);font-size:1.0625rem;line-height:1.5;color:var(--slate)}
+/* On narrow screens, drop the forced break in the Good Faith Estimate note so
+   "It offers a clear picture..." wraps back up onto the previous line instead
+   of starting its own. */
+@media (max-width:860px){.note-br{display:none}}
 /* Drop the card so its top edge lands on the .paylist's first horizontal rule
    beside it — the same 2.5rem the list uses as its own top margin. Side-by-side
    only; stacked, there is no list to line up with and the grid gap spaces it. */
