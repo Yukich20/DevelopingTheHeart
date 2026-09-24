@@ -773,6 +773,9 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
 .cform-foot a:hover,.cform-foot a:focus-visible{border-bottom-color:var(--brass)}
 .cform-foot .sep{display:inline-block;width:2px;height:.9em;margin:0 .6rem;
   background:var(--rule);vertical-align:-.08em}
+/* On mobile, break the line after "available" so "on Tuesday 8pm-8am"
+   starts on its own line instead of running on. */
+@media (min-width:861px){.cform-br{display:none}}
 
 /* ---------- contact ---------- */
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2.5rem;
