@@ -219,6 +219,9 @@ ul,ol{margin:0}
 /* Second line of a two-part headline: set smaller so a long supporting clause
    fits on one line at the width the band actually has. */
 .hero h1 .h1-sub{display:block;font-size:.56em;line-height:1.15;margin-top:.4em}
+/* On mobile, break the FAQ headline after "reach out," so "ask me
+   directly." lands on its own line below. */
+@media (min-width:861px){.faq-h1-br{display:none}}
 /* Tan rather than white so the headline above — the one line meant to stand
    out — is the only white text in the hero. */
 .hero-sub{font-size:clamp(1.0625rem,1.8vw,1.25rem);color:var(--brass-light);
@@ -773,9 +776,11 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
 .cform-foot a:hover,.cform-foot a:focus-visible{border-bottom-color:var(--brass)}
 .cform-foot .sep{display:inline-block;width:2px;height:.9em;margin:0 .6rem;
   background:var(--rule);vertical-align:-.08em}
-/* On mobile, break the line after "available" so "on Tuesday 8pm-8am"
-   starts on its own line instead of running on. */
+/* On mobile, break the line after "Tuesday-Saturday" so "Night sessions
+   available on Tuesday 8pm-8am" runs as its own line below, instead of
+   the two staying joined by the separator dot. */
 @media (min-width:861px){.cform-br{display:none}}
+@media (max-width:860px){.cform-sep-mobile{display:none}}
 
 /* ---------- contact ---------- */
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2.5rem;
