@@ -806,11 +806,11 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
    8pm-8am" so it runs as its own line below. */
 @media (min-width:861px){.cform-mobile-only{display:none}}
 @media (max-width:860px){.cform-desktop-only{display:none}}
-/* Below ~423px this line (its own line on mobile once joined with the row
+/* Below ~414px this line (its own line on mobile once joined with the row
    above) is too wide to hold one line at the normal size. Scale it down
    just enough to fit - fit to this exact string's measured width, not a
    generic rule, so it stays paired with this one line. */
-@media (max-width:422px){.cform-hours{font-size:calc(3.81vw - 1.5px);white-space:nowrap}}
+@media (max-width:413px){.cform-hours{font-size:calc(4vw - 1.9px);white-space:nowrap}}
 
 /* ---------- contact ---------- */
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2.5rem;
