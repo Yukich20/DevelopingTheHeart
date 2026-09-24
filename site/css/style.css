@@ -219,9 +219,10 @@ ul,ol{margin:0}
 /* Second line of a two-part headline: set smaller so a long supporting clause
    fits on one line at the width the band actually has. */
 .hero h1 .h1-sub{display:block;font-size:.56em;line-height:1.15;margin-top:.4em}
-/* On mobile, pull the attribution right up under the quote instead of
-   leaving the usual .4em gap. */
-@media (max-width:860px){.hero h1 .h1-sub--tight{margin-top:0}}
+/* On mobile, run the attribution onto the same line as the end of the
+   quote (using the leftover space after "honor.") instead of dropping it
+   to its own line below. */
+@media (max-width:860px){.hero h1 .h1-sub--tight{display:inline;margin-top:0}}
 /* Below ~460px this clause (55 characters) wraps to two lines at its normal
    size. Scale it down just enough to hold one line at any narrower width -
    the formula is fit to this exact string's measured width, not a generic
@@ -805,6 +806,11 @@ h2.head--terms{text-transform:uppercase;letter-spacing:.07em;font-weight:400;
    8pm-8am" so it runs as its own line below. */
 @media (min-width:861px){.cform-mobile-only{display:none}}
 @media (max-width:860px){.cform-desktop-only{display:none}}
+/* Below ~423px this line (its own line on mobile once joined with the row
+   above) is too wide to hold one line at the normal size. Scale it down
+   just enough to fit - fit to this exact string's measured width, not a
+   generic rule, so it stays paired with this one line. */
+@media (max-width:422px){.cform-hours{font-size:calc(3.81vw - 1.5px);white-space:nowrap}}
 
 /* ---------- contact ---------- */
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2.5rem;
